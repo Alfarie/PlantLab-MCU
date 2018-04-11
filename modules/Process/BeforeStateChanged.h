@@ -1,0 +1,34 @@
+#include <Task.h>
+extern TaskManager taskManager;
+class BeforeStateChanged : public WaterProcess
+{
+  public:
+    BeforeStateChanged(callback ns) : WaterProcess(1000,ns){};
+    String GetStatus(){
+    /*
+      {
+        type: water-fill,
+        data: {
+          crt: currentTime,
+          max: 0
+        }
+      }
+    */
+    return "{ \"type\": \"water-bsch\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waitingTime) +" }}" ;
+  }
+  private:
+    float waitingTime = 5;
+    virtual bool OnStart()
+    {
+        currentTime = 0;
+        return true;
+    }
+    virtual void OnUpdate(uint32_t delta_time)
+    {
+        currentTime += (delta_time/1000.0);
+        if(currentTime >= waitingTime){
+            nextState();
+            taskManager.StopTask(this);
+        }
+    }
+};
