@@ -15,7 +15,7 @@ public:
         }
       }
     */
-    return "{ \"type\": \"water-cir\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.cirTime) +" }}" ;
+    return "{ \"type\": \"waterprocess-cir\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.cirTime) +" }}" ;
   }
 
 private:
@@ -23,7 +23,7 @@ private:
   {
     if (!waterProcess.isCir)
     {
-      nextState();
+      nextState("cir");
       return false;
     }
     testCom.println("cir water: start");
@@ -38,7 +38,7 @@ private:
     {
       currentTime = 0;
       DigitalWrite(4, LOW);
-      nextState();
+      nextState("cir");
       taskManager.StopTask(this);
     }
   }

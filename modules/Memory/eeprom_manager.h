@@ -74,9 +74,13 @@ class EEPROM_Manager
             data_water_process wt = InitWaterProcess();
             // {timer,3,1,300-480,540-720,780-960,1020-1200,1260-1439}
             
-            for(int i = 0 ; i < CHANNEL_NUMBER ;i++){
+            for(int i = 0 ; i < 4 ;i++){
                 EEPROM.put(channel_list[i], dt);
             }
+            dt.mode = 5;
+            EEPROM.put(channel_list[4], dt);
+            EEPROM.put(channel_list[5], dt);
+            
             EEPROM.put(water_process_byte, wt);
 
             EEPROM.put(init_byte, 2);

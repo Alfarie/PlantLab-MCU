@@ -3,7 +3,7 @@ extern TaskManager taskManager;
 class WaterProcess : public Task
 {
   public:
-    typedef void (*callback)();
+    typedef void (*callback)(String str);
     WaterProcess(int ms,callback ns) : Task(MsToTaskTime(ms)),
                                         nextState(ns){};
     

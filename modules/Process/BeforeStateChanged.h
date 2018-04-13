@@ -14,7 +14,7 @@ class BeforeStateChanged : public WaterProcess
         }
       }
     */
-    return "{ \"type\": \"water-bsch\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waitingTime) +" }}" ;
+    return "{ \"type\": \"waterprocess-bsch\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waitingTime) +" }}" ;
   }
   private:
     float waitingTime = 5;
@@ -25,9 +25,10 @@ class BeforeStateChanged : public WaterProcess
     }
     virtual void OnUpdate(uint32_t delta_time)
     {
+      //  testCom.println(GetStatus());
         currentTime += (delta_time/1000.0);
         if(currentTime >= waitingTime){
-            nextState();
+            nextState("bsch");
             taskManager.StopTask(this);
         }
     }

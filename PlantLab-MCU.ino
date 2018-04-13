@@ -18,7 +18,7 @@ String ShowBoardInfo(){
 
 HardwareSerial &mpuCom    = Serial;
 HardwareSerial &debugCom  = Serial1;
-HardwareSerial &sensorCom = Serial2;
+HardwareSerial &solCom = Serial2;
 HardwareSerial &testCom = Serial3;
 
 #include "./modules/Helper/DisplayLog.h"
@@ -37,10 +37,13 @@ struct sensor_s
 {
     float soil;
     float vpd;
-    float par;
+    float ec;
+    float ph;
+    float water;
     float temp;
     float humi;
     float co2;
+    float light;
 };
 
 #include "./modules/Control/Control.h"
@@ -89,7 +92,7 @@ void setup()
 
     debugCom.begin(115200);
     mpuCom.begin(115200);
-    sensorCom.begin(9600);
+    solCom.begin(9600);
     testCom.begin(115200);
     
     debugCom.println("Initializing...");

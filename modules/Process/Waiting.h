@@ -4,7 +4,8 @@ class Waiting : public WaterProcess
 {
 public:
   Waiting(callback ns) : WaterProcess(1000, ns){};
-  String GetStatus(){
+
+ String GetStatus(){
     /*
       {
         type: water-fill,
@@ -14,15 +15,16 @@ public:
         }
       }
     */
-    return "{ \"type\": \"water-waiting\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.waitingTime) +" }}" ;
+    
+    return "{ \"type\": \"waterprocess-wait\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.waitingTime
+    ) +" }}" ;
   }
 private:
   virtual bool OnStart()
   {
-    testCom.println("waiting water: start");
     currentTime = 0;
-    DigitalWrite(5, OFF);
-    DigitalWrite(6, OFF);
+    // DigitalWrite(5, OFF);
+    // DigitalWrite(6, OFF);
     return true;
   }
   virtual void OnUpdate(uint32_t delta_time)
@@ -31,12 +33,8 @@ private:
     if (currentTime > waterProcess.waitingTime)
     {
       currentTime = 0;
-      
-      if (waterProcess.isFill || waterProcess.isCir)
-      {
-        nextState();
-        taskManager.StopTask(this);
-      }
+      nextState("waiting");
+      taskManager.StopTask(this);
     }
   }
 };

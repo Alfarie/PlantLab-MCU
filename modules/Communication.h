@@ -144,18 +144,7 @@ private:
     // {datetime,8,1,17,6,31}
     if (res.startsWith("sensors"))
     {
-      sensor_s sensor = Sensor::instance()->GetSensors();
-      // mpuCom.println("Sensor from mcu");
-      String sensorDataJsonStr = "{ \"soil\":" + String(sensor.soil) +
-                                 ",\"vpd\":" + String(sensor.vpd) +
-                                 ",\"temperature\":" + String(sensor.temp) +
-                                 ",\"humidity\":" + String(sensor.humi) +
-                                 ",\"co2\":" + String(sensor.co2) +
-                                 ",\"par\":" + String(sensor.par) +
-                                 ", \"date\":" + "\"" + DateTime::instance()->GetDateString() + "\"" +
-                                 ", \"time\":" + "\"" + DateTime::instance()->GetTimeString() + "\"" + "}";
-      String data = "{\"type\": \"sensors\",\"data\": " + sensorDataJsonStr + "}";
-      mpuCom.println(data);
+      mpuCom.println(Sensor::instance()->GetSensorsString());
     }
     else if (res.startsWith("checkstatus"))
     {
@@ -341,6 +330,10 @@ private:
     else if (res.startsWith("water-status"))
     {
       mpuCom.println(WaterProcessControl::GetStatus());
+    }
+    else if (res.startsWith("water-control"))
+    {
+      mpuCom.println(WaterProcessControl::GetControl());
     }
     else if (res.startsWith("done"))
     {

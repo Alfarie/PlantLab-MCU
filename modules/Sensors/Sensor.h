@@ -1,7 +1,9 @@
 #include <Task.h>
 extern TaskManager taskManager;
-
-
+#include "./Solution.h"
+#include "./Gy21.h"
+#include "./CO2.h"
+#include "./Light.h"
 class Sensor : public Task
 {
 public:
@@ -11,9 +13,14 @@ public:
     sensor.temp = 0;
     sensor.humi = 0;
     sensor.soil = 0;
-    sensor.par = 1000;
+    sensor.ec = 0;
+    sensor.ph = 0;
     sensor.vpd = 0;
     sensor.co2 = 0;
+
+    taskManager.StartTask(Solution::instance());
+    taskManager.StartTask(GY21::instance());
+    taskManager.StartTask(Co2Sensor::instance());
   };
   static Sensor *instance()
   {
@@ -24,6 +31,22 @@ public:
   sensor_s GetSensors()
   {
     return sensor;
+  }
+
+  String GetSensorsString()
+  {
+    String sensorDataJsonStr = "{ \"ec\":" + String(sensor.ec) +
+                               ",\"ph\":" + String(sensor.ph) +
+                               ",\"water\":" + String(sensor.water) +
+                               ",\"light\":" + String(sensor.light) +
+                               ",\"vpd\":" + String(sensor.vpd) +
+                               ",\"temperature\":" + String(sensor.temp) +
+                               ",\"humidity\":" + String(sensor.humi) +
+                               ",\"co2\":" + String(sensor.co2) +
+                               ", \"date\":" + "\"" + DateTime::instance()->GetDateString() + "\"" +
+                               ", \"time\":" + "\"" + DateTime::instance()->GetTimeString() + "\"" + "}";
+    String data = "{\"type\": \"sensors\",\"data\": " + sensorDataJsonStr + "}";
+    return data;
   }
   float GetSensor(int num)
   {
@@ -37,16 +60,22 @@ public:
       value = sensor.soil;
       break;
     case 2:
-      value = sensor.par;
-      break;
-    case 3:
       value = sensor.temp;
       break;
-    case 4:
+    case 3:
       value = sensor.humi;
       break;
-    case 5:
+    case 4:
       value = sensor.co2;
+      break;
+    case 5:
+      value = sensor.ec;
+      break;
+    case 6:
+      value = sensor.ph;
+      break;
+    case 7:
+      value = sensor.light;
       break;
     default:
       value = -1;
@@ -56,104 +85,42 @@ public:
 
 private:
   sensor_s sensor;
-  String cmdStr;
-  String sensorStr = "0.00,0.00,0.0,0,0";
-  char res[100];
-  int size, cmdNumber, cmdSize;
+
   virtual bool OnStart()
   {
-    
+
     return true;
   }
   virtual void OnUpdate(uint32_t delta_time)
   {
-    // sensor.temp = humidity.GetTemperatureC();
-    // sensor.humi = humidity.GetHumidity();
-    // sensor.soil = random(49, 51);
-    // sensor.par = random(1000, 1100);
-    // sensor.vpd = 1500;
+    sensor.temp = GY21::instance()->GetTemperature();
+    sensor.humi = GY21::instance()->GetHumidity();
+    sensor.vpd = GY21::instance()->GetVpd();
+    sensor.ec = Solution::instance()->GetEC();
+    sensor.ph = Solution::instance()->GetpH();
+    sensor.co2 = Co2Sensor::instance()->GetCO2();
+    sensor.light = Light::instance()->GetLight();
 
-    #if defined(ARDUINO_ARCH_AVR)
-      int increase = digitalRead(6);
-      int decrease = digitalRead(7);
-     
-      float ival = 0.01;
-      if(increase == HIGH){
-        sensor.temp += ival; 
-        sensor.humi += ival; 
-        sensor.soil += ival; 
-        sensor.par += ival; 
-        sensor.vpd += ival;
-      }
-      if(decrease == HIGH){
-        sensor.temp -= ival; 
-        sensor.humi -= ival; 
-        sensor.soil -= ival; 
-        sensor.par -= ival; 
-        sensor.vpd -= ival;
-      }
-    #endif
-    
-    while (sensorCom.available())
-    {
-      if (sensorCom.read() == '{')
-      {
-        int size = 0;
-        while (true)
-        {
-          if (sensorCom.available())
-          {
-            char ch = sensorCom.read();
-            if (ch == '}')
-            {
-              res[size] = '\0';
-              String resData = res;
-              float s[5];
-              ExtractDataFloat(s, 5, resData);
-              //25.00 50.00 50.00 60.00 1583.54
-              sensor.temp = s[0];
-              sensor.humi = s[1];
-              sensor.par = s[2];
-              sensor.soil = s[3];
-              sensor.vpd = s[4];
-			        sensor.co2 = s[5];
-              debugCom.println(PrintSensor());
-              break;
-            }
-            else
-            {
-              res[size] = ch;
-              size++;
-            }
-          }
-        }
-      }
-    }
-  }
+    // #if defined(ARDUINO_ARCH_AVR)
+    //   int increase = digitalRead(6);
+    //   int decrease = digitalRead(7);
 
-  String PrintSensor()
-  {
-    String str = String(sensor.temp) 
-			+ " " + String(sensor.humi) 
-			+ " " + String(sensor.par) 
-			+ " " + String(sensor.vpd) 
-			+ " " + String(sensor.soil)
-			+ " " + String(sensor.co2);
-    return str;
-  }
-
-  void ExtractDataFloat(float *data, int size, String res)
-  {
-    int i = 0, si = 0, ei, j = 0;
-    while (j < size)
-    {
-      int index = res.indexOf(",");
-      String a = res.substring(0, index);
-      data[j] = a.toFloat();
-      si = index;
-      res = res.substring(index + 1);
-      j++;
-    }
+    //   float ival = 0.01;
+    //   if(increase == HIGH){
+    //     sensor.temp += ival;
+    //     sensor.humi += ival;
+    //     sensor.soil += ival;
+    //     sensor.par += ival;
+    //     sensor.vpd += ival;
+    //   }
+    //   if(decrease == HIGH){
+    //     sensor.temp -= ival;
+    //     sensor.humi -= ival;
+    //     sensor.soil -= ival;
+    //     sensor.par -= ival;
+    //     sensor.vpd -= ival;
+    //   }
+    // #endif
   }
 };
 Sensor *Sensor::s_instance = 0;

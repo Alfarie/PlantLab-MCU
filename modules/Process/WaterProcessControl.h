@@ -9,15 +9,27 @@ class WaterProcessControl : public Task
   public:
     static WaterProcessControl *s_instance;
     static int state;
-    static void NextState(){
-      // taskManager.StopTask(wt_process[state]);
+
+    static String GetControl(){
+      String str = "{\"type\": \"water-control\", \"data\":{ \"isCir\": "  + String(waterProcess.isCir) + 
+                    ",\"isFill\": " + String(waterProcess.isFill) + 
+                    ",\"cirTime\": " + String(waterProcess.cirTime) + 
+                    ",\"waitTime\": " + String(waterProcess.waitingTime) + "}}";
+      return str;
+    }
+
+    static void NextState(String message){
+      testCom.println("Call from:" + message);
+      // testCom.println("stop state:" + String(state));
       state++;
-      testCom.println("State:" + String(state));
-      state = (state <= 5)? state: 0;
+      if(state>5){
+        state = 0;
+      }
+      testCom.println("start state:" + String(state));
       taskManager.StartTask(wt_process[state]);
     }
 
-    WaterProcessControl() : Task(MsToTaskTime(1000)){
+    WaterProcessControl() : Task(MsToTaskTime(100)){
       s_fillWater = new FillWater(WaterProcessControl::NextState);
       s_cirWater = new CirWater(WaterProcessControl::NextState);
       s_waiting = new Waiting(WaterProcessControl::NextState);
@@ -40,6 +52,7 @@ class WaterProcessControl : public Task
     }
 
     static String GetStatus(){
+      
       return wt_process[state]->GetStatus();
     }
 
@@ -57,6 +70,11 @@ class WaterProcessControl : public Task
     virtual void OnUpdate(uint32_t delta_time)
     {
       // testCom.println(WaterProcessControl::GetStatus());
+      // for(int i = 0 ; i < CHANNEL_NUMBER ;i++){
+      //   testCom.print(" " + String(ChannelStatus[i]) + " " );
+      // }
+      // testCom.println();
+      // testCom.println(state);
     }
 
 };

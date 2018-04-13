@@ -24,6 +24,7 @@ class ChannelHanler : public Task
     {
         taskManager.StopTask(channel[ch - 1]);
         int mode = rom_channel[ch - 1].mode;
+        
         switch (mode)
         {
         case 0:
@@ -47,7 +48,7 @@ class ChannelHanler : public Task
             taskManager.StartTask(channel[ch - 1]);
             break;
         default:
-            DisplayLog::PrintError("ChannelHandler: Unknow channel mode " + String(mode));
+            testCom.println("ChannelHandler: Unknow channel mode " + String(mode));
         }
     }
 
@@ -72,7 +73,7 @@ class ChannelHanler : public Task
         String chstr = "";
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
-            chstr += ch[0];
+            chstr += ch[i];
             if(i != CHANNEL_NUMBER -1) chstr += ",";
         }
         return "{\"type\": \"channel-status\",\"data\": [" + chstr + "]}";
@@ -110,7 +111,7 @@ class ChannelHanler : public Task
         }
         return "{\"type\": \"control-setbound\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
     }
-
+    
     String JsonIrrigation()
     {
         String ch[CHANNEL_NUMBER];
@@ -234,7 +235,7 @@ class ChannelHanler : public Task
                 taskManager.StartTask(channel[i]);
                 break;
             default:
-                DisplayLog::PrintError("ChannelHandler: Unknow channel mode " + String(mode));
+                testCom.println("ChannelHandler: Unknow channel mode " + String(mode));
             }
         }
     }

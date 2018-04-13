@@ -9,7 +9,8 @@ public:
     pinMode(FT_SENSOR, INPUT);
   };
 
-  String GetStatus(){
+  String GetStatus()
+  {
     /*
       {
         type: water-fill,
@@ -19,46 +20,53 @@ public:
         }
       }
     */
-    return "{ \"type\": \"water-fill\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": 0 }}" ;
+
+    return "{ \"type\": \"waterprocess-fill\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": 0 }}";
   }
 
 private:
+  float flotingTime = 0;
   virtual bool OnStart()
   {
 
     boolean ft_state = digitalRead(FT_SENSOR);
     currentTime = 0;
-    if(ft_state){
-      nextState();
+    flotingTime = 0;
+    if (ft_state)
+    {
+      nextState("fill water");
       return false;
     }
 
     testCom.println("isFill:" + String(waterProcess.isFill));
-    if(!waterProcess.isFill){
-      nextState();
+    if (!waterProcess.isFill)
+    {
+      nextState("fill water");
       return false;
     }
 
-    testCom.println("fill water: start");
-    DigitalWrite(5, HIGH);
+    DigitalWrite(5, ON);
     return true;
   }
   virtual void OnUpdate(uint32_t delta_time)
   {
-    if(digitalRead(FT_SENSOR)){
-      currentTime += (delta_time/1000.0);
-      if(currentTime >= 3.0){
-        DigitalWrite(5, LOW);
-        currentTime=0;
 
-        nextState();
+    currentTime += (delta_time / 1000.0);
+    testCom.println(currentTime);
+    if (digitalRead(FT_SENSOR))
+    {
+      flotingTime += (delta_time / 1000.0);
+      if (flotingTime >= 3.0)
+      {
+        DigitalWrite(5, OFF);
+        flotingTime = 0;
+        nextState("fill water");
         taskManager.StopTask(this);
-        
       }
     }
-    else{
-      currentTime = 0;
+    else
+    {
+      flotingTime = 0;
     }
   }
-
 };

@@ -50,9 +50,11 @@ class DateTime : public Task
         if(_datetime.month > 12){
             _datetime.month = 1;
         }
+
         if(_datetime.day > 31){
             _datetime.day = 1;
         }
+
         if(_datetime.year > 99){
             _datetime.year = 18;
         }
@@ -65,13 +67,14 @@ class DateTime : public Task
 
     String GetTimeString()
     {
-
         if(_datetime.hour > 24){
             _datetime.hour = 0;
         }
+
         if(_datetime.minute > 60){
             _datetime.minute = 0;
         }
+
         if(_datetime.second > 60){
             _datetime.second = 0;
         }
@@ -97,6 +100,7 @@ class DateTime : public Task
         Wire.endTransmission();
         Refresh();
         debugCom.println(GetDateString());
+
     }
 
     void Refresh()
@@ -113,8 +117,10 @@ class DateTime : public Task
         _datetime.day = bcdToDec(Wire.read());
         _datetime.month = bcdToDec(Wire.read());
         _datetime.year = bcdToDec(Wire.read());
+
     }
-     void ShowDateTime(DT dt)
+    
+    void ShowDateTime(DT dt)
     {
         // 12:00:00 12/12/17
         String str = "[PlantLab] Date Time: " + String(dt.hour) + ":" + String(dt.minute) + ":" + String(dt.second) + " " + String(dt.day) + "/" + String(dt.month) + "/" + String(dt.year);
