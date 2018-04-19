@@ -48,6 +48,7 @@ public:
     String data = "{\"type\": \"sensors\",\"data\": " + sensorDataJsonStr + "}";
     return data;
   }
+  
   float GetSensor(int num)
   {
     float value = 0.0f;

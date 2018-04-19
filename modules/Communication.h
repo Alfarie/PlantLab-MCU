@@ -326,6 +326,7 @@ private:
       waterProcess.cirTime = mode[2];
       waterProcess.waitingTime = mode[3];
       EEPROM_Manager::UpdateWaterProcess();
+      mpuCom.println("UPD");
     }
     else if (res.startsWith("water-status"))
     {
