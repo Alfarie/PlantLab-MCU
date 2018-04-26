@@ -140,7 +140,6 @@ private:
   //{timer,1,1,20-60,90-150,200-260}{setpoint,2,50.5,30,30,1}{manual,3,0}{manual,4,1}
   bool CommandProcess(String res)
   {
-    debugCom.println(res);
     // mpuCom.println(res);
     // {datetime,8,1,17,6,31}
     if (res.startsWith("sensors"))
