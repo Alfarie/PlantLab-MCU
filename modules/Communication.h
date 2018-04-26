@@ -204,7 +204,7 @@ private:
       int dt[5] = {0, 0, 0, 0, 0};
       ExtractDataInt(dt, 5, res);
       // (byte s, byte m, byte h, byte dow, byte dom, byte mo, byte y)
-      DateTime::instance()->setDateDs1307(0, dt[4], dt[3], 0, dt[0], dt[1], dt[2]);
+      RTC::instance()->setDateDs1307(0, dt[4], dt[3], 0, dt[0], dt[1], dt[2]);
 
       mpuCom.println("UPD");
     }

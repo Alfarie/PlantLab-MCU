@@ -25,7 +25,7 @@ class Irrigation : public Control
     int mode, state;
     virtual bool OnStart()
     {
-        DigitalWrite(channel - 1, OFF);
+        DigitalWrite(channel - 1, CH_OFF);
         state = 0;
         current_par_accum = 0;
         return true;
@@ -62,7 +62,7 @@ class Irrigation : public Control
 
                 if (upperCheck && lowerCheck)
                 {
-                    DigitalWrite(channel - 1, ON);
+                    DigitalWrite(channel - 1, CH_ON);
                     state = 1;
                 }
             }
@@ -73,7 +73,7 @@ class Irrigation : public Control
                 bool lowerCheck = soil >= soil_lower;
                 if (upperCheck && lowerCheck)
                 {
-                    DigitalWrite(channel - 1, OFF);
+                    DigitalWrite(channel - 1, CH_OFF);
                     state = 0;
                 }
             }
@@ -87,7 +87,7 @@ class Irrigation : public Control
                 
                 if (current_par_accum >=  max_par)
                 {
-                    DigitalWrite(channel-1, ON);
+                    DigitalWrite(channel-1, CH_ON);
                     current_par_accum = 0;
                     state = 1;
                 }
@@ -95,7 +95,7 @@ class Irrigation : public Control
             else if(state == 1){
                 currentTime += (delta_time/1000);
                 if(currentTime >= working){
-                    DigitalWrite(channel - 1, OFF);
+                    DigitalWrite(channel - 1, CH_OFF);
                     currentTime = 0;
                     state = 0;
                 }

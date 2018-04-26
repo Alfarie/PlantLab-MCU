@@ -34,7 +34,16 @@ private:
   virtual void OnUpdate(uint32_t delta_time)
   {
     currentTime += (delta_time / 1000.0);
-    if (currentTime >= waterProcess.cirTime)
+
+
+    if (!waterProcess.isCir)
+    {
+      currentTime = 0;
+      DigitalWrite(4, LOW);
+      nextState("cir");
+      taskManager.StopTask(this);
+    }
+    else if (currentTime >= waterProcess.cirTime)
     {
       currentTime = 0;
       DigitalWrite(4, LOW);

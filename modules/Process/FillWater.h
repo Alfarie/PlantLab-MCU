@@ -45,7 +45,7 @@ private:
       return false;
     }
 
-    DigitalWrite(5, ON);
+    DigitalWrite(5, CH_ON);
     return true;
   }
   virtual void OnUpdate(uint32_t delta_time)
@@ -53,12 +53,20 @@ private:
 
     currentTime += (delta_time / 1000.0);
     testCom.println(currentTime);
-    if (digitalRead(FT_SENSOR))
+
+    if (!waterProcess.isFill)
+    {
+      DigitalWrite(5, CH_OFF);
+      flotingTime = 0;
+      nextState("fill water");
+      taskManager.StopTask(this);
+    }
+    else if (digitalRead(FT_SENSOR))
     {
       flotingTime += (delta_time / 1000.0);
       if (flotingTime >= 3.0)
       {
-        DigitalWrite(5, OFF);
+        DigitalWrite(5, CH_OFF);
         flotingTime = 0;
         nextState("fill water");
         taskManager.StopTask(this);

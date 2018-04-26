@@ -17,7 +17,7 @@ class Manual : public Control
     byte gpio_status;
     virtual bool OnStart()
     {
-        DigitalWrite(channel - 1, OFF);
+        DigitalWrite(channel - 1, CH_OFF);
         return true;
     }
     virtual void OnUpdate(uint32_t delta_time)

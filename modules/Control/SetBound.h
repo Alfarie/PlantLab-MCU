@@ -23,7 +23,7 @@ private:
   int state = 0;
   virtual bool OnStart()
   {
-    DigitalWrite(channel - 1, OFF);
+    DigitalWrite(channel - 1, CH_OFF);
     return true;
   }
   virtual void OnUpdate(uint32_t delta_time)
@@ -49,7 +49,7 @@ private:
 
         if (upperCheck && lowerCheck)
         {
-          DigitalWrite(channel - 1, ON);
+          DigitalWrite(channel - 1, CH_ON);
           state = 1;
         }
       }
@@ -61,7 +61,7 @@ private:
 
         if (upperCheck && lowerCheck)
         {
-          DigitalWrite(channel - 1, OFF);
+          DigitalWrite(channel - 1, CH_OFF);
           state = 0;
         }
       }
@@ -76,7 +76,7 @@ private:
 
         if (upperCheck && lowerCheck)
         {
-          DigitalWrite(channel - 1, ON);
+          DigitalWrite(channel - 1, CH_ON);
           state = 1;
         }
       }
@@ -88,7 +88,7 @@ private:
 
         if (upperCheck && lowerCheck)
         {
-          DigitalWrite(channel - 1, OFF);
+          DigitalWrite(channel - 1, CH_OFF);
           state = 0;
         }
       }

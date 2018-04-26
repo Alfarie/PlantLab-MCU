@@ -21,13 +21,13 @@ class Timer : public Control
     byte mode;
     virtual bool OnStart()
     {
-      DigitalWrite(channel - 1, OFF);
+      DigitalWrite(channel - 1, CH_OFF);
       return true;
     }
     // datetime,22,2,2018,14,21}
     virtual void OnUpdate(uint32_t delta_time)
     {
-      int currentMin = DateTime::instance()->GetCurrentMin();
+      int currentMin = RTC::instance()->GetCurrentMin();
        debugCom.print("Timer    is running " + String(channel) + " " + String(mode) + " " + String(size)) + " " + String(currentMin);;
        debugCom.print(" [");
        for(int i = 0 ; i < size; i++)
@@ -45,13 +45,13 @@ class Timer : public Control
       }
       if(flag){
         // ChannelHanler::SetChannelStatus( channel - 1, HIGH);
-        DigitalWrite(channel - 1, ON);
-        // debugCom.println(" ON ");
+        DigitalWrite(channel - 1, CH_ON);
+        // debugCom.println(" CH_ON ");
       }
       else {
         // ChannelHanler::SetChannelStatus( channel - 1, LOW);
-        DigitalWrite(channel - 1, OFF);
-        // debugCom.println(" OFF ");
+        DigitalWrite(channel - 1, CH_OFF);
+        // debugCom.println(" CH_OFF ");
       }
     }
 

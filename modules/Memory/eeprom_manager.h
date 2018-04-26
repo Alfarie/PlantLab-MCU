@@ -74,20 +74,27 @@ class EEPROM_Manager
             data_water_process wt = InitWaterProcess();
             // {timer,3,1,300-480,540-720,780-960,1020-1200,1260-1439}
             
-
             dt.mode = 1; // led timer
             EEPROM.put(channel_list[0], dt);
 
             dt.mode = 3; // co2 setbound
             dt.sensor = 4;
+            dt.setbound.lower = 1200;
+            dt.setbound.upper = 1500;
             EEPROM.put(channel_list[1], dt);
 
             dt.mode = 2; // ec setpoint
             dt.sensor = 5;
+            dt.setpoint.setpoint = 1.2;
+            dt.setpoint.working = 15;
+            dt.setpoint.detecting = 30;
             EEPROM.put(channel_list[2], dt);
 
-            dt.mode = 2; // ec setpoint
+            dt.mode = 2; // ph setpoint
             dt.sensor = 6;
+            dt.setpoint.setpoint = 7.5;
+            dt.setpoint.working = 15;
+            dt.setpoint.detecting = 30;
             EEPROM.put(channel_list[3], dt);
 
             dt.mode = 5;

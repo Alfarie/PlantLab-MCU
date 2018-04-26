@@ -23,14 +23,14 @@ HardwareSerial &testCom = Serial3;
 
 #include "./modules/Helper/DisplayLog.h"
 
-int ON = HIGH;
-int OFF = LOW;
+int CH_ON = HIGH;
+int CH_OFF = LOW;
 String MCU_STATE = "NRDY";
 
 struct timer_s
 {
     int st;
-    int en; // end or working depend on timer mode
+    int en; // end or working depend CH_ON timer mode
 };
 
 struct sensor_s
@@ -61,7 +61,8 @@ void DigitalWrite(int ch, int status){
 
 //General module
 #include "./modules/Memory/eeprom_manager.h"
-#include "./modules/DateTime.h"
+// #include "./modules/DateTime.h"
+#include "./modules/RTC.h"
 #include "./modules/Sensors/Sensor.h"
 
 //water process
@@ -99,7 +100,7 @@ void setup()
     testCom.println(ShowBoardInfo());
 
     EEPROM_Manager::InitEEPROM();
-    taskManager.StartTask(DateTime::instance());
+    taskManager.StartTask(RTC::instance());
     taskManager.StartTask(WaterProcessControl::instance());
     taskManager.StartTask(Sensor::instance());
     taskManager.StartTask(Communication::instance());

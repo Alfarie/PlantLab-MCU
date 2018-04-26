@@ -23,8 +23,8 @@ private:
   virtual bool OnStart()
   {
     currentTime = 0;
-    // DigitalWrite(5, OFF);
-    // DigitalWrite(6, OFF);
+    // DigitalWrite(5, CH_OFF);
+    // DigitalWrite(6, CH_OFF);
     return true;
   }
   virtual void OnUpdate(uint32_t delta_time)

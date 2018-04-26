@@ -37,13 +37,13 @@ public:
   {
     String sensorDataJsonStr = "{ \"ec\":" + String(sensor.ec) +
                                ",\"ph\":" + String(sensor.ph) +
+                               ",\"water\":" + String(sensor.water) +
                                ",\"light\":" + String(sensor.light) +
-                               ",\"vpd\":" + String(sensor.vpd) +
                                ",\"temperature\":" + String(sensor.temp) +
                                ",\"humidity\":" + String(sensor.humi) +
                                ",\"co2\":" + String(sensor.co2) +
-                               ", \"date\":" + "\"" + DateTime::instance()->GetDateString() + "\"" +
-                               ", \"time\":" + "\"" + DateTime::instance()->GetTimeString() + "\"" + "}";
+                               ", \"date\":" + "\"" + RTC::instance()->GetDateString() + "\"" +
+                               ", \"time\":" + "\"" + RTC::instance()->GetTimeString() + "\"" + "}";
     String data = "{\"type\": \"sensors\",\"data\": " + sensorDataJsonStr + "}";
     return data;
   }

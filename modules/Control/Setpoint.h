@@ -23,7 +23,7 @@ private:
   int state = 0;
   virtual bool OnStart()
   {
-    DigitalWrite(channel - 1, OFF);
+    DigitalWrite(channel - 1, CH_OFF);
     return true;
   }
   virtual void OnUpdate(uint32_t delta_time)
@@ -38,7 +38,7 @@ private:
         {
           if (sensorValue > setpoint)
           {
-            DigitalWrite(channel - 1, ON);
+            DigitalWrite(channel - 1, CH_ON);
             state = 1;
             currentTime = 0;
           }
@@ -55,7 +55,7 @@ private:
         currentTime += (delta_time / 1000);
         if (currentTime >= working)
         {
-          DigitalWrite(channel - 1, OFF);
+          DigitalWrite(channel - 1, CH_OFF);
           state = 0;
           currentTime = 0;
         }
@@ -70,7 +70,7 @@ private:
         {
           if (sensorValue < setpoint)
           {
-            DigitalWrite(channel - 1, ON);
+            DigitalWrite(channel - 1, CH_ON);
             state = 1;
             currentTime = 0;
           }
@@ -87,7 +87,7 @@ private:
         currentTime += (delta_time / 1000);
         if (currentTime >= working)
         {
-          DigitalWrite(channel - 1, OFF);
+          DigitalWrite(channel - 1, CH_OFF);
           state = 0;
           currentTime = 0;
         }
