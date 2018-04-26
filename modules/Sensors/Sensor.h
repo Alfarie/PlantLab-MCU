@@ -18,9 +18,9 @@ public:
     sensor.vpd = 0;
     sensor.co2 = 0;
 
-    taskManager.StartTask(Solution::instance());
-    taskManager.StartTask(GY21::instance());
-    taskManager.StartTask(Co2Sensor::instance());
+    // taskManager.StartTask(Solution::instance());
+    // taskManager.StartTask(GY21::instance());
+    // taskManager.StartTask(Co2Sensor::instance());
   };
   static Sensor *instance()
   {
@@ -37,7 +37,6 @@ public:
   {
     String sensorDataJsonStr = "{ \"ec\":" + String(sensor.ec) +
                                ",\"ph\":" + String(sensor.ph) +
-                               ",\"water\":" + String(sensor.water) +
                                ",\"light\":" + String(sensor.light) +
                                ",\"vpd\":" + String(sensor.vpd) +
                                ",\"temperature\":" + String(sensor.temp) +
@@ -94,13 +93,13 @@ private:
   }
   virtual void OnUpdate(uint32_t delta_time)
   {
-    sensor.temp = GY21::instance()->GetTemperature();
-    sensor.humi = GY21::instance()->GetHumidity();
-    sensor.vpd = GY21::instance()->GetVpd();
-    sensor.ec = Solution::instance()->GetEC();
-    sensor.ph = Solution::instance()->GetpH();
-    sensor.co2 = Co2Sensor::instance()->GetCO2();
-    sensor.light = Light::instance()->GetLight();
+    // sensor.temp = GY21::instance()->GetTemperature();
+    // sensor.humi = GY21::instance()->GetHumidity();
+    // sensor.vpd = GY21::instance()->GetVpd();
+    // sensor.ec = Solution::instance()->GetEC();
+    // sensor.ph = Solution::instance()->GetpH();
+    // sensor.co2 = Co2Sensor::instance()->GetCO2();
+    // sensor.light = Light::instance()->GetLight();
 
     // #if defined(ARDUINO_ARCH_AVR)
     //   int increase = digitalRead(6);

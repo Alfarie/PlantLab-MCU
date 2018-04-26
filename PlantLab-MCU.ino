@@ -49,6 +49,7 @@ struct sensor_s
 #include "./modules/Control/Control.h"
 Control *channel[CHANNEL_NUMBER];
 
+//
 int ChannelGpio[CHANNEL_NUMBER] = {32,33,25,26,27,28};
 int ChannelStatus[CHANNEL_NUMBER] = {LOW,LOW,LOW,LOW,LOW,LOW};
 
@@ -80,11 +81,8 @@ WaterProcess *wt_process[6];
 
 #include "./modules/Communication.h"
 
-
-
 void setup()
 {
-
     pinMode(53,OUTPUT);
     digitalWrite(53,HIGH);
     

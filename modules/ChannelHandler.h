@@ -24,7 +24,7 @@ class ChannelHanler : public Task
     {
         taskManager.StopTask(channel[ch - 1]);
         int mode = rom_channel[ch - 1].mode;
-        
+
         switch (mode)
         {
         case 0:
@@ -52,6 +52,34 @@ class ChannelHanler : public Task
         }
     }
 
+    static String CO2Status()
+    {
+        /*
+            {
+                mode: {0,1}, // active or inactive
+                crt:  1800, // current value
+                status: {0,1} // feeding or no feed
+            }
+        */
+        String data = "{ \"mode\":" + String(rom_channel[1].mode) + ", \"crt\":" + String(Sensor::instance()->GetSensor(4)) +
+                      ",\"status\":" + String(ChannelStatus[1]) + ",\"sensor\":" + String(rom_channel[1].sensor) + "}";
+
+        return "{\"type\": \"co2-status\",\"data\":" + data + "}";
+    }
+    static String ECStatus()
+    {
+        String data = "{ \"mode\":" + String(rom_channel[2].mode) + ", \"crt\":" + String(Sensor::instance()->GetSensor(5)) +
+                      ",\"status\":" + String(ChannelStatus[2]) + ",\"sensor\":" + String(rom_channel[2].sensor) + "}";
+
+        return "{\"type\": \"ec-status\",\"data\":" + data + "}";
+    }
+    static String PHStatus()
+    {
+        String data = "{ \"mode\":" + String(rom_channel[3].mode) + ", \"crt\":" + String(Sensor::instance()->GetSensor(6)) +
+                      ",\"status\":" + String(ChannelStatus[3]) + ",\"sensor\":" + String(rom_channel[3].sensor) + "}";
+        return "{\"type\": \"ph-status\",\"data\":" + data + "}";
+    }
+
     static String JsonChannelStatus()
     {
         /*
@@ -74,7 +102,8 @@ class ChannelHanler : public Task
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
             chstr += ch[i];
-            if(i != CHANNEL_NUMBER -1) chstr += ",";
+            if (i != CHANNEL_NUMBER - 1)
+                chstr += ",";
         }
         return "{\"type\": \"channel-status\",\"data\": [" + chstr + "]}";
     }
@@ -111,7 +140,7 @@ class ChannelHanler : public Task
         }
         return "{\"type\": \"control-setbound\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
     }
-    
+
     String JsonIrrigation()
     {
         String ch[CHANNEL_NUMBER];
@@ -195,15 +224,13 @@ class ChannelHanler : public Task
                 //         ",\"par_accum\":" + String(rom_channel[i].irrigation.par_accum) +
                 //         ",\"mode\":" + String(rom_channel[i].irrigation.mode) + "}";
 
-                data = "\"irrigation\":{ \"soil_upper\": " + String(rom_channel[i].irrigation.soil_upper) + ",\"soil_lower\":" + String(rom_channel[i].irrigation.soil_lower) + ",\"par_accum\":" + String(rom_channel[i].irrigation.par_accum) + ",\"mode\": " + String(rom_channel[i].irrigation.mode) + ",\"working\": " + String(rom_channel[i].irrigation.working) +"}";
+                data = "\"irrigation\":{ \"soil_upper\": " + String(rom_channel[i].irrigation.soil_upper) + ",\"soil_lower\":" + String(rom_channel[i].irrigation.soil_lower) + ",\"par_accum\":" + String(rom_channel[i].irrigation.par_accum) + ",\"mode\": " + String(rom_channel[i].irrigation.mode) + ",\"working\": " + String(rom_channel[i].irrigation.working) + "}";
             }
             ch[i] = "{ \"ch\":" + String(i + 1) + ", \"mode\":" + String(rom_channel[i].mode) + ",\"sensor\":" + String(rom_channel[i].sensor) + "," + data + "}";
         }
         String jsonControl = "{\"type\": \"control\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
         return jsonControl;
     }
-
-   
 
   private:
     void Init()
