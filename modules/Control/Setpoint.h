@@ -38,7 +38,12 @@ private:
         {
           if (sensorValue > setpoint)
           {
-            DigitalWrite(channel - 1, CH_ON);
+            if(ChannelStatus[4] == CH_ON || ChannelStatus[5] == CH_ON){
+              DigitalWrite(channel - 1, CH_OFF);
+            }
+            else{
+              DigitalWrite(channel - 1, CH_ON);
+            }
             state = 1;
             currentTime = 0;
           }
@@ -70,7 +75,14 @@ private:
         {
           if (sensorValue < setpoint)
           {
-            DigitalWrite(channel - 1, CH_ON);
+
+            if(ChannelStatus[4] == CH_ON || ChannelStatus[5] == CH_ON){
+              DigitalWrite(channel - 1, CH_OFF);
+            }
+            else{
+              DigitalWrite(channel - 1, CH_ON);
+            }
+
             state = 1;
             currentTime = 0;
           }
