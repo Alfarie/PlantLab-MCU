@@ -25,7 +25,7 @@ class BeforeStateChanged : public WaterProcess
     }
     virtual void OnUpdate(uint32_t delta_time)
     {
-      //  testCom.println(GetStatus());
+      //  //testCom.println(GetStatus());
         currentTime += (delta_time/1000.0);
         if(currentTime >= waitingTime){
             nextState("bsch");

@@ -37,7 +37,7 @@ private:
                  String(upper) + "/" +
                  String(state) + " " +
                  String(sensor);
-    debugCom.println(str);
+    //debugCom.println(str);
 
     if (sensor == 0)
     {

@@ -32,7 +32,7 @@ private:
   {
     #if defined(ARDUINO_ARCH_AVR)
       mem = freemem();
-      debugCom.println("[PlantLab] Free Memory: " + String(mem));
+      //debugCom.println("[PlantLab] Free Memory: " + String(mem));
     #endif
   }
 

@@ -114,7 +114,7 @@ class ChannelHanler : public Task
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
             String data = "\"manual\":{ \"status\":" + String(rom_channel[i].manual.status) + "}";
-            ch[i] = "{ \"ch\":" + String(i + 1) + ", \"mode\":" + String(rom_channel[i].mode) + ",\"sensor\":" + String(rom_channel[i].sensor) + "," + data + "}";
+            ch[i] = "{ \"ch\":" + String(i + 1) + "," + data + "}";
         }
         return "{\"type\": \"control-manual\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
     }
@@ -125,7 +125,7 @@ class ChannelHanler : public Task
         {
 
             String data = "\"setpoint\": { \"working\":" + String(rom_channel[i].setpoint.working) + ",\"setpoint\":" + String(rom_channel[i].setpoint.setpoint) + ",\"detecting\":" + String(rom_channel[i].setpoint.detecting) + "}";
-            ch[i] = "{ \"ch\":" + String(i + 1) + ", \"mode\":" + String(rom_channel[i].mode) + ",\"sensor\":" + String(rom_channel[i].sensor) + "," + data + "}";
+            ch[i] = "{ \"ch\":" + String(i + 1)  + "," + data + "}";
         }
         return "{\"type\": \"control-setpoint\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
     }
@@ -136,7 +136,7 @@ class ChannelHanler : public Task
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
             String data = "\"setbound\": { \"upper\":" + String(rom_channel[i].setbound.upper) + ",\"lower\":" + String(rom_channel[i].setbound.lower) + "}";
-            ch[i] = "{ \"ch\":" + String(i + 1) + ", \"mode\":" + String(rom_channel[i].mode) + ",\"sensor\":" + String(rom_channel[i].sensor) + "," + data + "}";
+            ch[i] = "{ \"ch\":" + String(i + 1) + "," + data + "}";
         }
         return "{\"type\": \"control-setbound\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
     }
@@ -147,7 +147,7 @@ class ChannelHanler : public Task
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
             String data = "\"irrigation\":{ \"soil_upper\": " + String(rom_channel[i].irrigation.soil_upper) + ",\"soil_lower\":" + String(rom_channel[i].irrigation.soil_lower) + ",\"par_accum\":" + String(rom_channel[i].irrigation.par_accum) + ",\"mode\": " + String(rom_channel[i].irrigation.mode) + ",\"working\": " + String(rom_channel[i].irrigation.working) + "}";
-            ch[i] = "{ \"ch\":" + String(i + 1) + ", \"mode\":" + String(rom_channel[i].mode) + ",\"sensor\":" + String(rom_channel[i].sensor) + "," + data + "}";
+            ch[i] = "{ \"ch\":" + String(i + 1)  + "," + data + "}";
         }
         return "{\"type\": \"control-irrigation\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
     }
@@ -170,8 +170,8 @@ class ChannelHanler : public Task
             timer_list += "]";
             // data = "{\"mode\": 1,\"timer_mode\":" + String(rom_channel[i].timer.mode) +
             //         ",\"timer_list\":" + timer_list + "}";
-            String data = "\"timer\": { \"mode\":" + String(rom_channel[i].timer.mode) + ",\"size\":" + String(rom_channel[i].timer.size) + ",\"list\":" + timer_list + "}";
-            ch[i] = "{ \"ch\":" + String(i + 1) + ", \"mode\":" + String(rom_channel[i].mode) + ",\"sensor\":" + String(rom_channel[i].sensor) + "," + data + "}";
+            String data = "\"timer\": { \"mode\":" + String(rom_channel[i].timer.mode) + ",\"list\":" + timer_list + "}";
+            ch[i] = "{ \"ch\":" + String(i + 1) + "," + data + "}";
         }
         return "{\"type\": \"control-timer\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
     }
@@ -181,7 +181,6 @@ class ChannelHanler : public Task
         String ch[CHANNEL_NUMBER];
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
-
             String data;
             if (rom_channel[i].mode == 0)
             {
@@ -226,7 +225,7 @@ class ChannelHanler : public Task
 
                 data = "\"irrigation\":{ \"soil_upper\": " + String(rom_channel[i].irrigation.soil_upper) + ",\"soil_lower\":" + String(rom_channel[i].irrigation.soil_lower) + ",\"par_accum\":" + String(rom_channel[i].irrigation.par_accum) + ",\"mode\": " + String(rom_channel[i].irrigation.mode) + ",\"working\": " + String(rom_channel[i].irrigation.working) + "}";
             }
-            ch[i] = "{ \"ch\":" + String(i + 1) + ", \"mode\":" + String(rom_channel[i].mode) + ",\"sensor\":" + String(rom_channel[i].sensor) + "," + data + "}";
+            ch[i] = "{ \"ch\":" + String(i + 1) + ",\"mode\":" + String(rom_channel[i].mode) + ",\"sensor\":" + String(rom_channel[i].sensor) + "," + data + "}";
         }
         String jsonControl = "{\"type\": \"control\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
         return jsonControl;

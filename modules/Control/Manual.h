@@ -22,7 +22,7 @@ class Manual : public Control
     }
     virtual void OnUpdate(uint32_t delta_time)
     {
-        debugCom.println("Manual   is running " + String(channel) + " " + String(gpio_status));
+        //debugCom.println("Manual   is running " + String(channel) + " " + String(gpio_status));
         // digitalWrite( ChannelGpio[channel-1], gpio_status);
         // ChannelHanler::SetChannelStatus( channel - 1, gpio_status);
         DigitalWrite(channel - 1, gpio_status);

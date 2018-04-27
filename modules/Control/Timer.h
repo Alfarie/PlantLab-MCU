@@ -34,7 +34,7 @@ class Timer : public Control
        {
          debugCom.print( String(timer_list[i].st) + "-" + String(timer_list[i].en) + ",");
        }
-       debugCom.println("] ");
+       //debugCom.println("] ");
      
       bool flag = false;
       for(int i = 0 ; i < size; i++){
@@ -46,12 +46,12 @@ class Timer : public Control
       if(flag){
         // ChannelHanler::SetChannelStatus( channel - 1, HIGH);
         DigitalWrite(channel - 1, CH_ON);
-        // debugCom.println(" CH_ON ");
+        // //debugCom.println(" CH_ON ");
       }
       else {
         // ChannelHanler::SetChannelStatus( channel - 1, LOW);
         DigitalWrite(channel - 1, CH_OFF);
-        // debugCom.println(" CH_OFF ");
+        // //debugCom.println(" CH_OFF ");
       }
     }
 

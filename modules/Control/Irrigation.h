@@ -50,7 +50,7 @@ class Irrigation : public Control
                    String(max_par) + " st" +
                    String(state) + " m" +
                    String(mode);
-        debugCom.println(str);
+        //debugCom.println(str);
 
         //only soil
         if (mode == 0)

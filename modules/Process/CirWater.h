@@ -26,7 +26,7 @@ private:
       nextState("cir");
       return false;
     }
-    testCom.println("cir water: start");
+    //testCom.println("cir water: start");
     currentTime = 0;
     DigitalWrite(4, HIGH);
     return true;

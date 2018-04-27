@@ -16,8 +16,7 @@ public:
       }
     */
     
-    return "{ \"type\": \"waterprocess-wait\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.waitingTime
-    ) +" }}" ;
+    return "{ \"type\": \"waterprocess-wait\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.waitingTime) +" }}" ;
   }
 private:
   virtual bool OnStart()
@@ -29,6 +28,7 @@ private:
   }
   virtual void OnUpdate(uint32_t delta_time)
   {
+    
     currentTime += (delta_time / 1000.0);
     if (currentTime > waterProcess.waitingTime)
     {
@@ -36,5 +36,6 @@ private:
       nextState("waiting");
       taskManager.StopTask(this);
     }
+    
   }
 };

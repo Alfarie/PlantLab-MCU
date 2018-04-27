@@ -19,13 +19,13 @@ class WaterProcessControl : public Task
     }
 
     static void NextState(String message){
-      testCom.println("Call from:" + message);
-      // testCom.println("stop state:" + String(state));
+      //testCom.println("Call from:" + message);
+      // //testCom.println("stop state:" + String(state));
       state++;
       if(state>5){
         state = 0;
       }
-      testCom.println("start state:" + String(state));
+      //testCom.println("start state:" + String(state));
       taskManager.StartTask(wt_process[state]);
     }
 
@@ -69,12 +69,12 @@ class WaterProcessControl : public Task
     }
     virtual void OnUpdate(uint32_t delta_time)
     {
-      // testCom.println(WaterProcessControl::GetStatus());
+      // //testCom.println(WaterProcessControl::GetStatus());
       // for(int i = 0 ; i < CHANNEL_NUMBER ;i++){
       //   testCom.print(" " + String(ChannelStatus[i]) + " " );
       // }
-      // testCom.println();
-      // testCom.println(state);
+      // //testCom.println();
+      // //testCom.println(state);
     }
 
 };

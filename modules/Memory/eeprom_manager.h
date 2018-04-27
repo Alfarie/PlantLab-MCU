@@ -59,17 +59,17 @@ class EEPROM_Manager
         #endif
         byte init;
         EEPROM.get(init_byte, init);
-        testCom.println("init:" + String(init));
+        //testCom.println("init:" + String(init));
         if (init == 2)
         {
-            debugCom.println("Initialize eeprom GetAll data");
-            testCom.println("Initialize eeprom GetAll data");
+            //debugCom.println("Initialize eeprom GetAll data");
+            //testCom.println("Initialize eeprom GetAll data");
             GetAll();
         }
         else
         {
-            debugCom.println("Initialize eeprom create new setting");
-            testCom.println("Initialize eeprom create new setting");
+            //debugCom.println("Initialize eeprom create new setting");
+            //testCom.println("Initialize eeprom create new setting");
             data_table_s dt = InitData();
             data_water_process wt = InitWaterProcess();
             // {timer,3,1,300-480,540-720,780-960,1020-1200,1260-1439}
@@ -122,7 +122,7 @@ class EEPROM_Manager
     }
     static void UpdateWaterProcess(){
         EEPROM.put(water_process_byte, waterProcess);
-        testCom.println("WaterProcess Updated");
+        //testCom.println("WaterProcess Updated");
         Commit();
     }
     static data_water_process InitWaterProcess(){

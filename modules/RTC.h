@@ -84,7 +84,7 @@ class RTC : public Task
     virtual void OnUpdate(uint32_t delta_time)
     {
         now = rtc.now();
-        debugCom.println(GetTimeString() + " " + GetDateString() + "-------------------------");
+        //debugCom.println(GetTimeString() + " " + GetDateString() + "-------------------------");
     }
     String AddZero(byte val)
     {

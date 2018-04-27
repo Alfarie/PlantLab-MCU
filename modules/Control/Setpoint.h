@@ -115,7 +115,7 @@ private:
                     "ct" + String(currentTime) + " " +
                     "ss" + String(sensor);
 
-    debugCom.println(str);
+    //debugCom.println(str);
   }
   
   void UpdateFromRom()

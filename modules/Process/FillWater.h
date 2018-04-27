@@ -1,6 +1,6 @@
 #include <Task.h>
 extern TaskManager taskManager;
-#define FT_SENSOR A3
+
 class FillWater : public WaterProcess
 {
 public:
@@ -20,7 +20,6 @@ public:
         }
       }
     */
-
     return "{ \"type\": \"waterprocess-fill\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": 0 }}";
   }
 
@@ -38,7 +37,7 @@ private:
       return false;
     }
 
-    testCom.println("isFill:" + String(waterProcess.isFill));
+    //testCom.println("isFill:" + String(waterProcess.isFill));
     if (!waterProcess.isFill)
     {
       nextState("fill water");
@@ -52,7 +51,7 @@ private:
   {
 
     currentTime += (delta_time / 1000.0);
-    testCom.println(currentTime);
+    //testCom.println(currentTime);
 
     if (!waterProcess.isFill)
     {

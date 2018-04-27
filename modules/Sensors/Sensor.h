@@ -1,5 +1,6 @@
 #include <Task.h>
 extern TaskManager taskManager;
+#define FT_SENSOR A3
 #include "./Solution.h"
 #include "./Gy21.h"
 #include "./CO2.h"
@@ -18,9 +19,9 @@ public:
     sensor.vpd = 0;
     sensor.co2 = 0;
 
-    // taskManager.StartTask(Solution::instance());
-    // taskManager.StartTask(GY21::instance());
-    // taskManager.StartTask(Co2Sensor::instance());
+    taskManager.StartTask(Solution::instance());
+    taskManager.StartTask(GY21::instance());
+    taskManager.StartTask(Co2Sensor::instance());
   };
   static Sensor *instance()
   {
@@ -42,6 +43,7 @@ public:
                                ",\"temperature\":" + String(sensor.temp) +
                                ",\"humidity\":" + String(sensor.humi) +
                                ",\"co2\":" + String(sensor.co2) +
+                               ",\"floating\":" + String(sensor.floating) +
                                ", \"date\":" + "\"" + RTC::instance()->GetDateString() + "\"" +
                                ", \"time\":" + "\"" + RTC::instance()->GetTimeString() + "\"" + "}";
     String data = "{\"type\": \"sensors\",\"data\": " + sensorDataJsonStr + "}";
@@ -101,26 +103,15 @@ private:
     // sensor.co2 = Co2Sensor::instance()->GetCO2();
     // sensor.light = Light::instance()->GetLight();
 
-    // #if defined(ARDUINO_ARCH_AVR)
-    //   int increase = digitalRead(6);
-    //   int decrease = digitalRead(7);
+    sensor.temp = 25.0;
+    sensor.humi = 60.0;
+    sensor.water = 24.0;
+    sensor.ec = 1.5;
+    sensor.ph = 6.5;
+    sensor.co2 = 1500;
+    sensor.light = 10000;
+    sensor.floating = digitalRead(FT_SENSOR);
 
-    //   float ival = 0.01;
-    //   if(increase == HIGH){
-    //     sensor.temp += ival;
-    //     sensor.humi += ival;
-    //     sensor.soil += ival;
-    //     sensor.par += ival;
-    //     sensor.vpd += ival;
-    //   }
-    //   if(decrease == HIGH){
-    //     sensor.temp -= ival;
-    //     sensor.humi -= ival;
-    //     sensor.soil -= ival;
-    //     sensor.par -= ival;
-    //     sensor.vpd -= ival;
-    //   }
-    // #endif
   }
 };
 Sensor *Sensor::s_instance = 0;

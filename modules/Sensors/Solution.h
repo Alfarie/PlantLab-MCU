@@ -57,7 +57,7 @@ private:
               ec = s[0];
               ph = s[1];
               water = s[2];
-              // debugCom.println(PrintSensor());
+              // //debugCom.println(PrintSensor());
               break;
             }
             else

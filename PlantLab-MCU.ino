@@ -44,6 +44,7 @@ struct sensor_s
     float humi;
     float co2;
     float light;
+    boolean floating;
 };
 
 #include "./modules/Control/Control.h"
@@ -82,11 +83,11 @@ WaterProcess *wt_process[6];
 
 #include "./modules/Communication.h"
 
+#include "./modules/Helper/Puppet.h"
+
 void setup()
 {
-    pinMode(53,OUTPUT);
-    digitalWrite(53,HIGH);
-    
+    Puppet::instance();
     Wire.begin();
 
     debugCom.begin(115200);
@@ -97,7 +98,7 @@ void setup()
     debugCom.println("Initializing...");
     debugCom.println(ShowBoardInfo());
     mpuCom.println(ShowBoardInfo());
-    testCom.println(ShowBoardInfo());
+    //testCom.println(ShowBoardInfo());
 
     EEPROM_Manager::InitEEPROM();
     taskManager.StartTask(RTC::instance());

@@ -4,7 +4,7 @@ class Communication : public Task
 {
 public:
   static Communication *s_instance;
-  Communication() : Task(MsToTaskTime(5))
+  Communication() : Task(MsToTaskTime(1))
   {
     cmdStr = "";
     cmdNumber = 0;
@@ -204,8 +204,7 @@ private:
       ExtractDataInt(dt, 5, res);
       // (byte s, byte m, byte h, byte dow, byte dom, byte mo, byte y)
       RTC::instance()->setDateDs1307(0, dt[4], dt[3], 0, dt[0], dt[1], dt[2]);
-
-      mpuCom.println("UPD");
+      mpuCom.println("UPD-DATETIME");
     }
 
     else if(res.startsWith("mode"))
@@ -218,7 +217,7 @@ private:
       rom_channel[ch - 1].mode = mode[1];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD");
+      mpuCom.println("UPD-MODE");
     }
 
     //{manual, channel, status}
@@ -234,7 +233,7 @@ private:
       rom_channel[ch - 1].manual.status = mode[1];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD");
+      mpuCom.println("UPD-MANUAL");
     }
     // {setpoint,channel,setpoint_value, working, detecting, sensor}
     // {setpoint,1,50.5,30,30,1}
@@ -252,7 +251,7 @@ private:
       rom_channel[ch - 1].sensor = (byte)mode[4];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD");
+      mpuCom.println("UPD-SETPOINT");
     }
     //{timer,1,1,20-60,90-150,200-260}
     else if (res.startsWith("timer"))
@@ -275,7 +274,7 @@ private:
       rom_channel[ch - 1].timer.mode = timer_mode;
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD");
+      mpuCom.println("UPD-TIMER");
     }
     //{setbound, channel, upper,lower,sensor}
     // {setbound, 1, 40.0, 50.0, 1}
@@ -292,9 +291,9 @@ private:
       rom_channel[ch - 1].sensor = (byte)mode[3];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD");
+      mpuCom.println("UPD-SETBOUND");
     }
-
+    
     //{irrigation,ch, irr_mode,soil_up, soil_low, par_acc, working_time}
     //{irrigation,1, 0, 60,40,1.5, 30}
     else if (res.startsWith("irrigation"))
@@ -312,7 +311,7 @@ private:
       rom_channel[ch -1].irrigation.working = mode[5];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD");
+      mpuCom.println("UPD-IRR");
     }
   //{waterprocess,1,1,10,10}
     else if (res.startsWith("waterprocess"))
@@ -326,7 +325,7 @@ private:
       waterProcess.cirTime = mode[2];
       waterProcess.waitingTime = mode[3];
       EEPROM_Manager::UpdateWaterProcess();
-      mpuCom.println("UPD");
+      mpuCom.println("UPD-WATER");
     }
     else if (res.startsWith("water-status"))
     {
@@ -344,8 +343,6 @@ private:
     {
       mpuCom.println(ChannelHanler::instance()->PHStatus());
     }
-
-
     else if (res.startsWith("water-control"))
     {
       mpuCom.println(WaterProcessControl::GetControl());

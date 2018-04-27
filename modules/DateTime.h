@@ -99,7 +99,7 @@ class DateTime : public Task
         Wire.write(decToBcd(y));
         Wire.endTransmission();
         Refresh();
-        debugCom.println(GetDateString());
+        //debugCom.println(GetDateString());
 
     }
 
@@ -124,7 +124,7 @@ class DateTime : public Task
     {
         // 12:00:00 12/12/17
         String str = "[PlantLab] Date Time: " + String(dt.hour) + ":" + String(dt.minute) + ":" + String(dt.second) + " " + String(dt.day) + "/" + String(dt.month) + "/" + String(dt.year);
-        debugCom.println(str);
+        //debugCom.println(str);
     }
 
   private:
