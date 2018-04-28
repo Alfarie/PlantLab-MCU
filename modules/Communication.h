@@ -347,6 +347,27 @@ private:
     {
       mpuCom.println(WaterProcessControl::GetControl());
     }
+    else if (res.startsWith("getcal"))
+    {
+      String str = "{\"type\": \"calibration\",\"data\":{\"ec\":" + String(calibrationData.ecCal) + ",\"ph\":"+String(calibrationData.phCal) + "}}";
+      mpuCom.println(str);
+    }
+    else if (res.startsWith("setcal"))
+    {
+      res.replace("setcal,", "");
+      res.trim();
+      float mode[2];
+      ExtractDataFloat(mode, 2, res);
+      calibrationData.ecCal = mode[0];
+      calibrationData.phCal = mode[1];
+      EEPROM_Manager::UpdateCalibration();
+      mpuCom.println("UPD-SETCAL");
+    }
+    else if (res.startsWith("clear-memory"))
+    {
+      EEPROM.write(EEPROM_Manager::init_byte, 0);
+      mpuCom.println("UPD-CLEARMEM");
+    }
     else if (res.startsWith("done"))
     {
       mpuCom.println("DONE");
