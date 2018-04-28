@@ -95,22 +95,23 @@ private:
   }
   virtual void OnUpdate(uint32_t delta_time)
   {
-    // sensor.temp = GY21::instance()->GetTemperature();
-    // sensor.humi = GY21::instance()->GetHumidity();
+    sensor.temp = GY21::instance()->GetTemperature();
+    sensor.humi = GY21::instance()->GetHumidity();
     // sensor.vpd = GY21::instance()->GetVpd();
-    // sensor.ec = Solution::instance()->GetEC();
-    // sensor.ph = Solution::instance()->GetpH();
-    // sensor.co2 = Co2Sensor::instance()->GetCO2();
-    // sensor.light = Light::instance()->GetLight();
-
-    sensor.temp = 25.0;
-    sensor.humi = 60.0;
-    sensor.water = 24.0;
-    sensor.ec = 1.5;
-    sensor.ph = 6.5;
-    sensor.co2 = 1500;
-    sensor.light = 10000;
+    sensor.ec = Solution::instance()->GetEC() * calibrationData.ecCal;
+    sensor.ph = Solution::instance()->GetpH() * calibrationData.phCal;
+    sensor.water = Solution::instance()->GetWaterTemp();
+    sensor.co2 = Co2Sensor::instance()->GetCO2();
+    sensor.light = Light::instance()->GetLight();
     sensor.floating = digitalRead(FT_SENSOR);
+
+    // sensor.temp = 25.0;
+    // sensor.humi = 60.0;
+    // sensor.water = 24.0;
+    // sensor.ec = 1.5;
+    // sensor.ph = 6.5;
+    // sensor.co2 = 1500;
+    // sensor.light = 10000;
 
   }
 };
