@@ -43,8 +43,14 @@ struct data_water_process{
     int waitingTime;
     byte isFill;
 };
+
+struct data_calibration{
+    float ecCal;
+    float phCal;
+};
 data_table_s rom_channel[CHANNEL_NUMBER];
 data_water_process waterProcess;
+data_calibration calibrationData;
 
 class EEPROM_Manager
 {
@@ -52,6 +58,7 @@ class EEPROM_Manager
     EEPROM_Manager(){};
     static int init_byte;
     static int water_process_byte;
+    static int calibration_byte;
     static void InitEEPROM()
     {
         #if !defined(ARDUINO_ARCH_AVR)
@@ -64,16 +71,19 @@ class EEPROM_Manager
         {
             //debugCom.println("Initialize eeprom GetAll data");
             //testCom.println("Initialize eeprom GetAll data");
+            mpuCom.println("INFO-GETMEMORY");
             GetAll();
         }
         else
         {
             //debugCom.println("Initialize eeprom create new setting");
             //testCom.println("Initialize eeprom create new setting");
+            mpuCom.println("INFO-CREATEMEMORY");
             data_table_s dt = InitData();
             data_water_process wt = InitWaterProcess();
+            data_calibration cal = {1.1, 1.1};
+
             // {timer,3,1,300-480,540-720,780-960,1020-1200,1260-1439}
-            
             dt.mode = 1; // led timer
             EEPROM.put(channel_list[0], dt);
 
@@ -102,6 +112,7 @@ class EEPROM_Manager
             EEPROM.put(channel_list[5], dt);
             
             EEPROM.put(water_process_byte, wt);
+            EEPROM.put(calibration_byte, cal);
 
             EEPROM.put(init_byte, 2);
 			Commit();
@@ -122,6 +133,12 @@ class EEPROM_Manager
     }
     static void UpdateWaterProcess(){
         EEPROM.put(water_process_byte, waterProcess);
+        //testCom.println("WaterProcess Updated");
+        Commit();
+    }
+
+    static void UpdateCalibration(){
+        EEPROM.put(calibration_byte, calibrationData);
         //testCom.println("WaterProcess Updated");
         Commit();
     }
@@ -173,6 +190,7 @@ class EEPROM_Manager
             EEPROM.get(channel_list[i], rom_channel[i]);
         }
         EEPROM.get(water_process_byte, waterProcess);
+        EEPROM.get(calibration_byte, calibrationData);
     }
 
     static void Commit(){
@@ -185,5 +203,6 @@ class EEPROM_Manager
 };
 int EEPROM_Manager::init_byte = 0;
 int EEPROM_Manager::water_process_byte = 50;
+int EEPROM_Manager::calibration_byte = 20;
 int EEPROM_Manager::channel_list[CHANNEL_NUMBER] = {100, 200, 300, 400, 500, 600};
 
