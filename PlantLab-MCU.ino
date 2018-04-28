@@ -108,7 +108,7 @@ void setup()
     taskManager.StartTask(MemoryCheck::instance());
     ChannelHanler::instance();
     MCU_STATE = "RDY";
-    
+    mpuCom.println(MCU_STATE);
 }
 void loop()
 {
