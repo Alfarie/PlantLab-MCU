@@ -13,15 +13,17 @@ public:
   {
     sensor.temp = 0;
     sensor.humi = 0;
-    sensor.soil = 0;
+    sensor.water = 0;
     sensor.ec = 0;
     sensor.ph = 0;
-    sensor.vpd = 0;
     sensor.co2 = 0;
+    sensor.light = 0;
+
 
     taskManager.StartTask(Solution::instance());
     taskManager.StartTask(GY21::instance());
     taskManager.StartTask(Co2Sensor::instance());
+    taskManager.StartTask(Light::instance());
   };
   static Sensor *instance()
   {
@@ -90,9 +92,9 @@ private:
 
   virtual bool OnStart()
   {
-
     return true;
   }
+  
   virtual void OnUpdate(uint32_t delta_time)
   {
     sensor.temp = GY21::instance()->GetTemperature();

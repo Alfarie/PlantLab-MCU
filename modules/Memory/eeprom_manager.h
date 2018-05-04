@@ -106,7 +106,7 @@ class EEPROM_Manager
             dt.setpoint.working = 15;
             dt.setpoint.detecting = 30;
             EEPROM.put(channel_list[3], dt);
-
+            
             dt.mode = 5;
             EEPROM.put(channel_list[4], dt);
             EEPROM.put(channel_list[5], dt);
