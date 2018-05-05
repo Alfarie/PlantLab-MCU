@@ -88,7 +88,7 @@ public:
   }
 
 private:
-  sensor_s sensor;
+  sensor_s sensor = {0};
 
   virtual bool OnStart()
   {
