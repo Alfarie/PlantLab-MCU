@@ -105,7 +105,8 @@ private:
     sensor.water = Solution::instance()->GetWaterTemp();
     sensor.co2 = Co2Sensor::instance()->GetCO2();
     sensor.light = Light::instance()->GetLight();
-    sensor.floating = digitalRead(FT_SENSOR);
+    // sensor.floating = digitalRead(FT_SENSOR);
+    sensor.floating = Solution::instance()->GetFloating();
 
     // sensor.temp = 25.0;
     // sensor.humi = 60.0;

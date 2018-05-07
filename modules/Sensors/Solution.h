@@ -4,7 +4,7 @@ class Solution : public Task
 {
 public:
   static Solution *s_instance;
-  Solution() : Task(MsToTaskTime(5)){};
+  Solution() : Task(MsToTaskTime(50)){};
   static Solution *instance()
   {
     if (!s_instance)
@@ -25,14 +25,23 @@ public:
     return water;
   }
 
+  int GetFloating(){
+    return floating;
+  }
+
 private:
   float ec, ph, water;
+  int floating;
   String cmdStr;
   String sensorStr = "0.00,0.00,0.0,0,0";
   char res[100];
   int size, cmdNumber, cmdSize;
   virtual bool OnStart()
   {
+    ec = 0;
+    ph = 0;
+    water = 0;
+    floating = 0;
     return true;
   }
   virtual void OnUpdate(uint32_t delta_time)
@@ -52,11 +61,12 @@ private:
               res[size] = '\0';
               String resData = res;
               float s[5];
-              ExtractDataFloat(s, 3, resData);
+              ExtractDataFloat(s, 4, resData);
               //25.00 50.00 50.00 60.00 1583.54
               ec = s[0];
               ph = s[1];
               water = s[2];
+              floating = s[3];
               // //debugCom.println(PrintSensor());
               break;
             }

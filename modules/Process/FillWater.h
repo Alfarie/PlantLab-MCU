@@ -6,7 +6,7 @@ class FillWater : public WaterProcess
 public:
   FillWater(callback ns) : WaterProcess(1000, ns)
   {
-    pinMode(FT_SENSOR, INPUT);
+    // pinMode(FT_SENSOR, INPUT);
   };
 
   String GetStatus()
@@ -28,10 +28,10 @@ private:
   virtual bool OnStart()
   {
 
-    boolean ft_state = digitalRead(FT_SENSOR);
+    int ft_state = Solution::instance()->GetFloating();
     currentTime = 0;
     flotingTime = 0;
-    if (ft_state)
+    if (ft_state == 1)
     {
       nextState("fill water");
       return false;
@@ -52,7 +52,7 @@ private:
 
     currentTime += (delta_time / 1000.0);
     //testCom.println(currentTime);
-
+    
     if (!waterProcess.isFill)
     {
       DigitalWrite(5, CH_OFF);
@@ -60,7 +60,7 @@ private:
       nextState("fill water");
       taskManager.StopTask(this);
     }
-    else if (digitalRead(FT_SENSOR))
+    else if (Solution::instance()->GetFloating() == 1)
     {
       flotingTime += (delta_time / 1000.0);
       if (flotingTime >= 3.0)
