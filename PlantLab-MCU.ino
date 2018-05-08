@@ -17,8 +17,8 @@ String ShowBoardInfo(){
 }
 
 HardwareSerial &mpuCom    = Serial;
-HardwareSerial &debugCom  = Serial1;
-HardwareSerial &solCom = Serial2;
+HardwareSerial &debugCom  = Serial2;
+HardwareSerial &solCom = Serial1;
 HardwareSerial &testCom = Serial3;
 
 #include "./modules/Helper/DisplayLog.h"
@@ -51,7 +51,7 @@ struct sensor_s
 Control *channel[CHANNEL_NUMBER];
 
 //
-int ChannelGpio[CHANNEL_NUMBER] = {32,33,25,26,27,28};
+int ChannelGpio[CHANNEL_NUMBER] = {2,4,6,7,3,5};//LED,CO2,EC,PH,PUMP,VALVE
 int ChannelStatus[CHANNEL_NUMBER] = {LOW,LOW,LOW,LOW,LOW,LOW};
 
 void DigitalWrite(int ch, int status){
