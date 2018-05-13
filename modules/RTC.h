@@ -67,12 +67,16 @@ class RTC : public Task
         if(hrtc.isrunning()){
             now = hrtc.now();
             if(now.day() <= 31){
-                srtc.adjust(DateTime(now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()));
+                SRTCUpdate();
             }
         }
         else{
             now = srtc.now();
         }              
+    }
+
+    void SRTCUpdate(){
+        srtc.adjust(DateTime(now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()));
     }
 
     String AddZero(byte val)
