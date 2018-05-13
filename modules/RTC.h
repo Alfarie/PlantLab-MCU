@@ -3,15 +3,21 @@
 extern TaskManager taskManager;
 
 #include "RTClib.h"
-#define ADDRESS 0x68
-RTC_Millis rtc;
+
+
+RTC_DS1307 hrtc;
+RTC_Millis srtc;
+
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 class RTC : public Task
 {
   public:
     static RTC *s_instance;
-    RTC() : Task(MsToTaskTime(1000)){};
+    RTC() : Task(MsToTaskTime(1000))
+    {
+        
+    };
     
     static RTC *instance()
     {
@@ -45,47 +51,30 @@ class RTC : public Task
 
     void setDateDs1307(byte s, byte m, byte h, byte dow, byte dom, byte mo, byte y)
     {
-        // Wire.beginTransmission(ADDRESS);
-        // Wire.write(decToBcd(0));
-        // Wire.write(decToBcd(s)); // 0 to bit 7 starts the clock
-        // Wire.write(decToBcd(m));
-        // Wire.write(decToBcd(h)); // If you want 12 hour am/pm you need to set
-        // // bit 6 (also need to change readDateDs1307)
-        // Wire.write(decToBcd(dow));
-        // Wire.write(decToBcd(dom));
-        // Wire.write(decToBcd(mo));
-        // Wire.write(decToBcd(y));
-        // Wire.endTransmission();
-        
-        rtc.adjust(DateTime(y, mo,dom, h, m, s));
+        hrtc.adjust(DateTime(y, mo, dom, h, m, s));
+        srtc.adjust(DateTime(y, mo, dom, h, m, s));
     }
 
   private:
-    DateTime now;
+    DateTime now, temp;
     virtual bool OnStart()
     {
-        
-        // Wire.beginTransmission(ADDRESS);
-        // Wire.write(decToBcd(0));
-        // Wire.endTransmission();
-        // Wire.requestFrom(ADDRESS, 7);
-
-        // byte second = bcdToDec(Wire.read() & 0x7f);
-        // byte minute = bcdToDec(Wire.read());
-        // byte hour = bcdToDec(Wire.read() & 0x3f); // Need to change this if 12 hour am/pm
-        // byte dayOfWeek = bcdToDec(Wire.read());
-        // byte day = bcdToDec(Wire.read());
-        // byte month = bcdToDec(Wire.read());
-        // byte year = bcdToDec(Wire.read());
-
-        rtc.begin( DateTime(__DATE__, __TIME__) );
+        srtc.adjust(DateTime(2018, 1, 1, 0, 0, 0));
         return true;
     }
     virtual void OnUpdate(uint32_t delta_time)
     {
-        now = rtc.now();
-        //debugCom.println(GetTimeString() + " " + GetDateString() + "-------------------------");
+        if(hrtc.isrunning()){
+            now = hrtc.now();
+            if(now.day() <= 31){
+                srtc.adjust(DateTime(now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()));
+            }
+        }
+        else{
+            now = srtc.now();
+        }              
     }
+
     String AddZero(byte val)
     {
         if (val < 10)
