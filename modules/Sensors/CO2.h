@@ -37,6 +37,7 @@ private:
     }
     else
     {
+      //co2 is not running...
       _ppmCO2 = tempco2;
     }
   }
