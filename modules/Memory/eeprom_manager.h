@@ -85,6 +85,7 @@ class EEPROM_Manager
 
             // {timer,3,1,300-480,540-720,780-960,1020-1200,1260-1439}
             dt.mode = 1; // led timer
+            dt.timer.mode = 0;
             EEPROM.put(channel_list[0], dt);
 
             dt.mode = 3; // co2 setbound
