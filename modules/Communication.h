@@ -190,10 +190,7 @@ private:
       {
         mpuCom.println(ChannelHanler::instance()->JsonIrrigation());
       }
-      else if(cmd.startsWith("allchannel"))
-      {
-        mpuCom.println(ChannelHanler::instance()->JsonControl());
-      }
+      
     }
 
     else if (res.startsWith("datetime"))
