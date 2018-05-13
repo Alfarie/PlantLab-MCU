@@ -77,20 +77,8 @@ class RTC : public Task
 
     String AddZero(byte val)
     {
-        if (val < 10)
-        {
-            return "0";
-        }
-        else
-            return "";
-    }
-    byte decToBcd(byte val)
-    {
-        return ((val / 10 * 16) + (val % 10));
-    }
-    byte bcdToDec(byte val)
-    {
-        return ((val / 16 * 10) + (val % 16));
+        if (val < 10)return "0";
+        else return "";
     }
 };
 RTC *RTC::s_instance = 0;
