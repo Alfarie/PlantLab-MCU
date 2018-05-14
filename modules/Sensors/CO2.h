@@ -40,6 +40,11 @@ private:
       //co2 is not running...
       _ppmCO2 = tempco2;
     }
+    
+    if(_ppmCO2 > 10000 || _ppmCO2 < 0) {
+      _ppmCO2 = -1;
+    }
+
   }
 };
 Co2Sensor *Co2Sensor::s_instance = 0;
