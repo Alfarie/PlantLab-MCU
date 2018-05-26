@@ -24,6 +24,6 @@ class Control : public Task
     }
     virtual void OnUpdate(uint32_t delta_time)
     {
-      //debugCom.println("Control is running " + String(channel));
+      
     }
 };

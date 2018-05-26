@@ -11,7 +11,6 @@ class Irrigation : public Control
 
     void SetValue(float su, float sl, float pac, int mode)
     {
-
         SaveToRom();
     }
 
@@ -40,16 +39,16 @@ class Irrigation : public Control
         current_par_accum += par;
         Irrigation::channel_paracc[channel - 1] = current_par_accum;
         
-        String str = "Irrigation is running " +
-                   String(channel) + " " +
-                   String(soil_lower) + "/" +
-                   String(soil) + "/" +
-                   String(soil_upper) + "-par" +
-                   String(par) + " " +
-                   String(current_par_accum) + "/" +
-                   String(max_par) + " st" +
-                   String(state) + " m" +
-                   String(mode);
+        // String str = "Irrigation is running " +
+        //            String(channel) + " " +
+        //            String(soil_lower) + "/" +
+        //            String(soil) + "/" +
+        //            String(soil_upper) + "-par" +
+        //            String(par) + " " +
+        //            String(current_par_accum) + "/" +
+        //            String(max_par) + " st" +
+        //            String(state) + " m" +
+        //            String(mode);
         //debugCom.println(str);
 
         //only soil

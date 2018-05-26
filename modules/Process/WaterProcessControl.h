@@ -19,8 +19,8 @@ class WaterProcessControl : public Task
     }
 
     static void NextState(String message){
-      //testCom.println("Call from:" + message);
-      // //testCom.println("stop state:" + String(state));
+      // testCom.println("Call from:" + message);
+      // testCom.println("stop state:" + String(state));
       state++;
       if(state>5){
         state = 0;
@@ -52,7 +52,6 @@ class WaterProcessControl : public Task
     }
 
     static String GetStatus(){
-      
       return wt_process[state]->GetStatus();
     }
 
@@ -76,7 +75,6 @@ class WaterProcessControl : public Task
       // //testCom.println();
       // //testCom.println(state);
     }
-
 };
 WaterProcessControl *WaterProcessControl::s_instance = 0;
 int WaterProcessControl::state = 0;

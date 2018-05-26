@@ -28,19 +28,10 @@ private:
     DigitalWrite(channel - 1, CH_OFF);
     return true;
   }
-  // datetime,22,2,2018,14,21}
+  
   virtual void OnUpdate(uint32_t delta_time)
   {
     int currentMin = RTC::instance()->GetCurrentMin();
-    // debugCom.print("Timer    is running " + String(channel) + " " + String(mode) + " " + String(size)) + " " + String(currentMin);
-    // ;
-    // debugCom.print(" [");
-    // for (int i = 0; i < size; i++)
-    // {
-    //   debugCom.print(String(timer_list[i].st) + "-" + String(timer_list[i].en) + ",");
-    // }
-    // debugCom.println("] ");
-
     if (mode == 0)
     {
       bool flag = false;

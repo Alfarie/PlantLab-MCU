@@ -23,7 +23,7 @@ public:
     taskManager.StartTask(Solution::instance());
     taskManager.StartTask(GY21::instance());
     taskManager.StartTask(Co2Sensor::instance());
-    taskManager.StartTask(Light::instance());
+    // taskManager.StartTask(Light::instance());
   };
   static Sensor *instance()
   {
