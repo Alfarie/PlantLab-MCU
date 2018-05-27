@@ -38,7 +38,7 @@ public:
 
   String GetSensorsString()
   {
-    String sensorDataJsonStr = "{ \"ec\":" + String(sensor.ec) +
+    /*String sensorDataJsonStr = "{ \"ec\":" + String(sensor.ec) +
                                ",\"ph\":" + String(sensor.ph) +
                                ",\"water\":" + String(sensor.water) +
                                ",\"light\":" + String(sensor.light) +
@@ -49,6 +49,19 @@ public:
                                ", \"date\":" + "\"" + RTC::instance()->GetDateString() + "\"" +
                                ", \"time\":" + "\"" + RTC::instance()->GetTimeString() + "\"" + "}";
     String data = "{\"type\": \"sensors\",\"data\": " + sensorDataJsonStr + "}";
+    */
+    
+    /*
+      {sensors, ec, ph, water_temp, temperature, humidity, co2, light, floating}
+    */
+    String data =  "{st-sensors," + String(sensor.ec) + 
+            "," + String(sensor.ph) + 
+            "," + String(sensor.water) + 
+            "," + String(sensor.light) + 
+            "," + String(sensor.temp) + 
+            "," + String(sensor.humi) + 
+            "," + String(sensor.co2) + 
+            "," + String(sensor.floating) + "}"; 
     return data;
   }
   
