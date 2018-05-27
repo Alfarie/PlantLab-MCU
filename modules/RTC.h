@@ -49,6 +49,12 @@ class RTC : public Task
         return str;
     }
 
+    String GetDateTimeString()
+    {
+        String data = "{st-datetime," + GetDateString() + "," + GetTimeString() + "}";
+        return data;
+    }
+
     void setDateDs1307(byte s, byte m, byte h, byte dow, byte dom, byte mo, byte y)
     {
         hrtc.adjust(DateTime(y, mo, dom, h, m, s));
