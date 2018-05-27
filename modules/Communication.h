@@ -142,9 +142,12 @@ private:
   {
     // mpuCom.println(res);
     // {datetime,8,1,17,6,31}
-    if (res.startsWith("sensors"))
+    if (res.startsWith("Gsensors"))
     {
       mpuCom.println(Sensor::instance()->GetSensorsString());
+    }
+    else if(res.startsWith("Gdatetime")){
+      mpuCom.println(RTC::instance()->GetDateTimeString());
     }
     else if (res.startsWith("checkstatus"))
     {
