@@ -62,26 +62,55 @@ class ChannelHanler : public Task
                 status: {0,1} // feeding or no feed
             }
         */
-        String data = "{ \"mode\":" + String(rom_channel[1].mode) + ", \"crt\":" + String(Sensor::instance()->GetSensor(4)) +
-                      ",\"status\":" + String(ChannelStatus[1]) + ",\"sensor\":" + String(rom_channel[1].sensor) + "}";
+        // String data = "{ \"mode\":" + String(rom_channel[1].mode) + ", \"crt\":" + String(Sensor::instance()->GetSensor(4)) +
+        //               ",\"status\":" + String(ChannelStatus[1]) + ",\"sensor\":" + String(rom_channel[1].sensor) + "}";
+        // return "{\"type\": \"co2-status\",\"data\":" + data + "}";
 
-        return "{\"type\": \"co2-status\",\"data\":" + data + "}";
+        String data = "{st-co2," + String(rom_channel[1].mode) + 
+                    "," + String(Sensor::instance()->GetSensor(4)) + 
+                    "," + String(ChannelStatus[1]) + 
+                    "," + String(rom_channel[1].sensor)  + "}";
+        return data;
     }
     static String ECStatus()
     {
-        String data = "{ \"mode\":" + String(rom_channel[2].mode) + ", \"crt\":" + String(Sensor::instance()->GetSensor(5)) +
+        /*String data = "{ \"mode\":" + String(rom_channel[2].mode) + ", \"crt\":" + String(Sensor::instance()->GetSensor(5)) +
                       ",\"status\":" + String(ChannelStatus[2]) + ",\"sensor\":" + String(rom_channel[2].sensor) + "}";
 
-        return "{\"type\": \"ec-status\",\"data\":" + data + "}";
+        return "{\"type\": \"ec-status\",\"data\":" + data + "}";*/
+
+        String data = "{st-ec," + String(rom_channel[2].mode) + 
+                    "," + String(Sensor::instance()->GetSensor(5)) + 
+                    "," + String(ChannelStatus[2]) + 
+                    "," + String(rom_channel[2].sensor)  + "}";
+        return data;
     }
     static String PHStatus()
     {
+        /*
         String data = "{ \"mode\":" + String(rom_channel[3].mode) + ", \"crt\":" + String(Sensor::instance()->GetSensor(6)) +
                       ",\"status\":" + String(ChannelStatus[3]) + ",\"sensor\":" + String(rom_channel[3].sensor) + "}";
         return "{\"type\": \"ph-status\",\"data\":" + data + "}";
+        */
+        String data = "{st-ph," + String(rom_channel[3].mode) + 
+                    "," + String(Sensor::instance()->GetSensor(6)) + 
+                    "," + String(ChannelStatus[3]) + 
+                    "," + String(rom_channel[3].sensor)  + "}";
+        return data;
     }
 
-    static String JsonChannelStatus()
+    static String GpioStatus(){
+        String data = "{st-gpio,";
+        for (int i = 0 ; i < CHANNEL_NUMBER ; i++)
+        {
+            data += String(ChannelStatus[i]);
+            if( i < CHANNEL_NUMBER-1) data += ",";
+        }
+        data += "}";
+        return data;
+    }
+
+    static String JsonChannelStatus(int start_ch,int number)
     {
         /*
             [
@@ -92,7 +121,7 @@ class ChannelHanler : public Task
                 }
             ]
         */
-        String ch[CHANNEL_NUMBER];
+        /*String ch[CHANNEL_NUMBER];
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
             ch[i] = "{ \"status\": " + String(ChannelStatus[i]) + "," +
@@ -106,40 +135,90 @@ class ChannelHanler : public Task
             if (i != CHANNEL_NUMBER - 1)
                 chstr += ",";
         }
-        return "{\"type\": \"channel-status\",\"data\": [" + chstr + "]}";
+        return "{\"type\": \"channel-status\",\"data\": [" + chstr + "]}";*/
+
+        int end_ch = start_ch + number;
+        String data = "";
+        for (int i = start_ch ; i < end_ch ; i++)
+        {
+            String chstr = "{ct-chst," + String(i + 1) + 
+                        "," + String(rom_channel[i].mode) + 
+                        "," + String(rom_channel[i].sensor) +
+                        "," + String(rom_channel[i].manual.status) + "}";
+            data += chstr;
+        }
+        return data;
     }
 
-    String JsonManual()
+    String JsonManual(int start_ch, int number)
     {
-        String ch[CHANNEL_NUMBER];
+        /*String ch[CHANNEL_NUMBER];
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
             String data = "\"manual\":{ \"status\":" + String(rom_channel[i].manual.status) + "}";
             ch[i] = "{ \"ch\":" + String(i + 1) + "," + data + "}";
         }
-        return "{\"type\": \"control-manual\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
+        return "{\"type\": \"control-manual\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";*/
+
+        int end_ch = start_ch + number;
+        String data = "";
+        for (int i = start_ch ; i < end_ch ; i++)
+        {
+            //{ct-manual, ch, status}
+            String chstr = "{ct-manual," + String(i + 1) + 
+                        "," + String(rom_channel[i].manual.status) + "}";
+            data += chstr;
+        }
+        return data;
     }
-    String JsonSetpoint()
+    String JsonSetpoint(int start_ch, int number)
     {
-        String ch[CHANNEL_NUMBER];
+
+        int end_ch = start_ch + number;
+        String data = "";
+        for (int i = start_ch ; i < end_ch ; i++)
+        {
+            //{ct-manual, ch, status}
+            String chstr = "{ct-setpoint," + String(i + 1) + 
+                        "," + String(rom_channel[i].setpoint.working) +
+                        "," + String(rom_channel[i].setpoint.setpoint) +
+                        "," + String(rom_channel[i].setpoint.detecting) + "}";
+            data += chstr;
+        }
+        return data;
+
+        /*String ch[CHANNEL_NUMBER];
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
-
             String data = "\"setpoint\": { \"working\":" + String(rom_channel[i].setpoint.working) + ",\"setpoint\":" + String(rom_channel[i].setpoint.setpoint) + ",\"detecting\":" + String(rom_channel[i].setpoint.detecting) + "}";
             ch[i] = "{ \"ch\":" + String(i + 1)  + "," + data + "}";
         }
         return "{\"type\": \"control-setpoint\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
+        */
+
     }
 
-    String JsonSetbound()
+    String JsonSetbound(int start_ch, int number)
     {
-        String ch[CHANNEL_NUMBER];
+        int end_ch = start_ch + number;
+        String data = "";
+        for (int i = start_ch ; i < end_ch ; i++)
+        {
+            //{ct-manual, ch, status}
+            String chstr = "{ct-setbound," + String(i + 1) + 
+                        "," + String(rom_channel[i].setbound.upper) +
+                        "," + String(rom_channel[i].setbound.lower) + "}";
+            data += chstr;
+        }
+        return data;
+        /*String ch[CHANNEL_NUMBER];
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
             String data = "\"setbound\": { \"upper\":" + String(rom_channel[i].setbound.upper) + ",\"lower\":" + String(rom_channel[i].setbound.lower) + "}";
             ch[i] = "{ \"ch\":" + String(i + 1) + "," + data + "}";
         }
         return "{\"type\": \"control-setbound\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
+        */
     }
 
     String JsonIrrigation()
@@ -153,8 +232,9 @@ class ChannelHanler : public Task
         return "{\"type\": \"control-irrigation\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "]}";
     }
 
-    String JsonTimer()
+    String JsonTimer(int start_ch, int number)
     {
+        /*
         String ch[CHANNEL_NUMBER];
         for (int i = 0; i < CHANNEL_NUMBER; i++)
         {
@@ -175,6 +255,26 @@ class ChannelHanler : public Task
             ch[i] = "{ \"ch\":" + String(i + 1) + "," + data + "}";
         }
         return "{\"type\": \"control-timer\",\"data\": [" + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "," + ch[4] + "]}";
+        */
+       int end_ch = start_ch + number;
+        String data = "";
+        for (int i = start_ch ; i < end_ch ; i++)
+        {
+            String timer_list = "[";
+            for (int j = 0; j < rom_channel[i].timer.size; j++)
+            {
+                String timer = "[" + String(rom_channel[i].timer.timer_list[j].st) + "-" + String(rom_channel[i].timer.timer_list[j].en) + "]";
+                timer_list += timer;
+                if (j != (rom_channel[i].timer.size - 1))
+                {
+                    timer_list += "-";
+                }
+            }
+            timer_list += "]";
+            data += "{ct-timer," + String(i+1) + "," + String(rom_channel[i].timer.mode) + 
+                            "," + timer_list + "}";
+        }
+        return data;
     }
 
   private:

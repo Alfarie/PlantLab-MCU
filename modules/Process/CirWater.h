@@ -15,7 +15,9 @@ public:
         }
       }
     */
-    return "{ \"type\": \"waterprocess-cir\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.cirTime) +" }}" ;
+    // return "{ \"type\": \"waterprocess-cir\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.cirTime) +" }}" ;
+    String data = "{st-water,cir," + String(currentTime) + "," + String(waterProcess.cirTime) + "}";
+    return data;
   }
 
 private:

@@ -158,42 +158,48 @@ private:
       String data = "{\"type\": \"free-memory\",\"data\": " + String(MemoryCheck::instance()->GetFreeMemory()) + "}";
       mpuCom.println(data);
     }
-
-    else if (res.startsWith("control"))/*  */
+    else if(res.startsWith("Ggpio")){
+      res.replace("Ggpio,", "");
+      res.trim();
+      mpuCom.println(ChannelHanler::instance()->GpioStatus());
+    }
+    else if (res.startsWith("Gcontrol"))/*  */
     {
       // ChannelHanler::instance()->JsonSettingAll();
       // mpuCom.println(ChannelHanler::instance()->JsonControl());
-      res.replace("control,", "");
+      res.replace("Gcontrol,", "");
       res.trim();
       String data[3];
       int size = 0;
       ExtractDataString(data, size,res);
       String cmd = data[0];
+      int start_ch = data[1].toInt() - 1;
+      int number = data[2].toInt();
+
       if(cmd.startsWith("channelstatus"))
       {
-        mpuCom.println(ChannelHanler::instance()->JsonChannelStatus());
+        mpuCom.println(ChannelHanler::instance()->JsonChannelStatus(start_ch, number));
       }
       else if(cmd.startsWith("manual"))
       {
-        mpuCom.println(ChannelHanler::instance()->JsonManual());
+        mpuCom.println(ChannelHanler::instance()->JsonManual(start_ch, number));
       }
       else if(cmd.startsWith("timer"))
       {
-        mpuCom.println(ChannelHanler::instance()->JsonTimer());
+        mpuCom.println(ChannelHanler::instance()->JsonTimer(start_ch, number));
       }
       else if(cmd.startsWith("setpoint"))
       {
-        mpuCom.println(ChannelHanler::instance()->JsonSetpoint());
+        mpuCom.println(ChannelHanler::instance()->JsonSetpoint(start_ch, number));
       }
       else if(cmd.startsWith("setbound"))
       {
-        mpuCom.println(ChannelHanler::instance()->JsonSetbound());
+        mpuCom.println(ChannelHanler::instance()->JsonSetbound(start_ch, number));
       }
       else if(cmd.startsWith("irrigation"))
       {
         mpuCom.println(ChannelHanler::instance()->JsonIrrigation());
       }
-      
     }
 
     else if (res.startsWith("datetime"))
@@ -204,7 +210,7 @@ private:
       ExtractDataInt(dt, 5, res);
       // (byte s, byte m, byte h, byte dow, byte dom, byte mo, byte y)
       RTC::instance()->setDateDs1307(0, dt[4], dt[3], 0, dt[0], dt[1], dt[2]);
-      mpuCom.println("UPD-DATETIME");
+      mpuCom.println("UPD-DATETIME" );
     }
 
     else if(res.startsWith("mode"))
@@ -217,7 +223,7 @@ private:
       rom_channel[ch - 1].mode = mode[1];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD-MODE");
+      mpuCom.println("UPD-MODE-" + String(ch));
     }
 
     //{manual, channel, status}
@@ -233,7 +239,7 @@ private:
       rom_channel[ch - 1].manual.status = mode[1];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD-MANUAL");
+      mpuCom.println("UPD-MANUAL-" + String(ch));
     }
     // {setpoint,channel,setpoint_value, working, detecting, sensor}
     // {setpoint,1,50.5,30,30,1}
@@ -251,7 +257,7 @@ private:
       rom_channel[ch - 1].sensor = (byte)mode[4];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD-SETPOINT");
+      mpuCom.println("UPD-SETPOINT-" + String(ch));
     }
     //{timer,1,1,20-60,90-150,200-260}
     else if (res.startsWith("timer"))
@@ -274,7 +280,7 @@ private:
       rom_channel[ch - 1].timer.mode = timer_mode;
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD-TIMER");
+      mpuCom.println("UPD-TIMER-" + String(ch));
     }
     //{setbound, channel, upper,lower,sensor}
     // {setbound, 1, 40.0, 50.0, 1}
@@ -291,7 +297,7 @@ private:
       rom_channel[ch - 1].sensor = (byte)mode[3];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD-SETBOUND");
+      mpuCom.println("UPD-SETBOUND-" + String(ch));
     }
     
     //{irrigation,ch, irr_mode,soil_up, soil_low, par_acc, working_time}
@@ -311,7 +317,7 @@ private:
       rom_channel[ch -1].irrigation.working = mode[5];
       EEPROM_Manager::Update(ch);
       ChannelHanler::instance()->Update(ch);
-      mpuCom.println("UPD-IRR");
+      mpuCom.println("UPD-IRR-" + String(ch));
     }
   //{waterprocess,1,1,10,10}
     else if (res.startsWith("waterprocess"))
@@ -327,30 +333,32 @@ private:
       EEPROM_Manager::UpdateWaterProcess();
       mpuCom.println("UPD-WATER");
     }
-    else if (res.startsWith("water-status"))
+    else if (res.startsWith("Gwater-status"))
     {
       mpuCom.println(WaterProcessControl::GetStatus());
     }
-    else if (res.startsWith("co2-status"))
+    else if (res.startsWith("Gco2-status"))
     {
       mpuCom.println(ChannelHanler::instance()->CO2Status());
     }
-    else if (res.startsWith("ec-status"))
+    else if (res.startsWith("Gec-status"))
     {
       mpuCom.println(ChannelHanler::instance()->ECStatus());
     }
-    else if (res.startsWith("ph-status"))
+    else if (res.startsWith("Gph-status"))
     {
       mpuCom.println(ChannelHanler::instance()->PHStatus());
     }
-    else if (res.startsWith("water-control"))
+    else if (res.startsWith("Gwater-control"))
     {
       mpuCom.println(WaterProcessControl::GetControl());
     }
     else if (res.startsWith("getcal"))
     {
-      String str = "{\"type\": \"calibration\",\"data\":{\"ec\":" + String(calibrationData.ecCal) + ",\"ph\":"+String(calibrationData.phCal) + "}}";
-      mpuCom.println(str);
+      // String str = "{\"type\": \"calibration\",\"data\":{\"ec\":" + String(calibrationData.ecCal) 
+      //               + ",\"ph\":"+String(calibrationData.phCal) + "}}";
+      String cal = "{se-cal," + String(calibrationData.ecCal)  + "," + String(calibrationData.phCal) + "}";
+      mpuCom.println(cal);
     }
     else if (res.startsWith("setcal"))
     {

@@ -14,7 +14,9 @@ class BeforeStateChanged : public WaterProcess
         }
       }
     */
-    return "{ \"type\": \"waterprocess-bsch\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waitingTime) +" }}" ;
+    // return "{ \"type\": \"waterprocess-bsch\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waitingTime) +" }}" ;
+    String data = "{st-water,bsch," + String(currentTime) + "," + String(waitingTime) + "}";
+    return data;
   }
   private:
     float waitingTime = 5;

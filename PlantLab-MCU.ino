@@ -97,7 +97,7 @@ void setup()
     Wire.begin();
 
     debugCom.begin(115200);
-    mpuCom.begin(115200);
+    mpuCom.begin(38400);
     solCom.begin(9600);
     testCom.begin(115200);
     

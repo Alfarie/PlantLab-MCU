@@ -20,7 +20,9 @@ public:
         }
       }
     */
-    return "{ \"type\": \"waterprocess-fill\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": 0 }}";
+    // return "{ \"type\": \"waterprocess-fill\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": 0 }}";
+    String data = "{st-water,fill," + String(currentTime) + ",0}";
+    return data;
   }
 
 private:

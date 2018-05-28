@@ -16,7 +16,9 @@ public:
       }
     */
     
-    return "{ \"type\": \"waterprocess-wait\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.waitingTime) +" }}" ;
+    // return "{ \"type\": \"waterprocess-wait\", \"data\":{ \"crt\": " + String(currentTime) + ", \"max\": "+ String(waterProcess.waitingTime) +" }}" ;
+    String data = "{st-water,wait," + String(currentTime) + "," + String(waterProcess.waitingTime) + "}";
+    return data;
   }
 private:
   virtual bool OnStart()
