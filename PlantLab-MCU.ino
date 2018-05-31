@@ -22,8 +22,8 @@ String ShowBoardInfo(){
     return str;
 }
 
-HardwareSerial &mpuCom    = Serial;
-HardwareSerial &debugCom  = Serial2;
+HardwareSerial &mpuCom    = Serial2;
+HardwareSerial &debugCom  = Serial;
 HardwareSerial &solCom = Serial1;
 HardwareSerial &testCom = Serial3;
 
