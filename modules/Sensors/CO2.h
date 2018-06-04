@@ -20,8 +20,8 @@ public:
   }
 
 private:
-  int _ppmCO2, tempco2;
-  int rc;
+  int _ppmCO2=0, tempco2=0;
+  int rc=0;
   virtual bool OnStart()
   {
     

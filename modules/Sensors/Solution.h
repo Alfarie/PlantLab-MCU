@@ -30,8 +30,8 @@ public:
   }
 
 private:
-  float ec, ph, water;
-  int floating;
+  float ec=0, ph=0, water=0;
+  int floating=0;
   String cmdStr;
   String sensorStr = "0.00,0.00,0.0,0,0";
   char res[100];

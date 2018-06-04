@@ -22,8 +22,8 @@ String ShowBoardInfo(){
     return str;
 }
 
-HardwareSerial &mpuCom    = Serial2;
-HardwareSerial &debugCom  = Serial;
+HardwareSerial &mpuCom    = Serial;
+HardwareSerial &debugCom  = Serial2;
 HardwareSerial &solCom = Serial1;
 HardwareSerial &testCom = Serial3;
 
@@ -97,7 +97,7 @@ void setup()
     Wire.begin();
 
     debugCom.begin(115200);
-    mpuCom.begin(38400);
+    mpuCom.begin(115200);
     solCom.begin(9600);
     testCom.begin(115200);
     

@@ -23,7 +23,7 @@ class GY21 : public Task
     }
     
   private:
-    float temperature, humidity,vpd;
+    float temperature=0, humidity=0,vpd=0;
     virtual bool OnStart()
     {
         return true;
