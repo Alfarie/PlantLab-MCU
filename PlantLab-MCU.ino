@@ -3,6 +3,8 @@ TaskManager taskManager;
 
 #include <Wire.h>
 #include <EEPROM.h>
+
+#include <SoftwareSerial.h>
 #define EEPROM_SIZE 1024
 #define CHANNEL_NUMBER 6
 #define VERSION 2.0
@@ -23,9 +25,10 @@ String ShowBoardInfo(){
 }
 
 HardwareSerial &mpuCom    = Serial;
-HardwareSerial &debugCom  = Serial2;
 HardwareSerial &solCom = Serial1;
+HardwareSerial &lightCom  = Serial2;
 HardwareSerial &airCom = Serial3;
+SoftwareSerial debugCom(21,22);
 
 #include "./modules/Helper/DisplayLog.h"
 
@@ -96,11 +99,12 @@ void setup()
     Puppet::instance();
     Wire.begin();
 
-    debugCom.begin(115200);
+    debugCom.begin(9600);
     mpuCom.begin(115200);
     
     solCom.begin(9600);
     airCom.begin(9600);
+    lightCom.begin(9600);
     
     debugCom.println("Initializing...");
     debugCom.println(ShowBoardInfo());
