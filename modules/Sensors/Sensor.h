@@ -3,9 +3,9 @@ extern TaskManager taskManager;
 #define FT_SENSOR A3
 #include "./Solution.h"
 #include "./Air.h"
+#include "./LightCom.h"
 #include "./Gy21.h"
 #include "./CO2.h"
-#include "./Light.h"
 class Sensor : public Task
 {
 public:
@@ -22,6 +22,7 @@ public:
 
     taskManager.StartTask(Solution::instance());
     taskManager.StartTask(Air::instance());
+    taskManager.StartTask(LightCom::instance());
     // taskManager.StartTask(GY21::instance());
     // taskManager.StartTask(Co2Sensor::instance());
     // taskManager.StartTask(Light::instance());
@@ -114,7 +115,7 @@ private:
     sensor.temp = Air::instance()->GetTemperature();
     sensor.humi = Air::instance()->GetHumidity();
     sensor.co2 = Air::instance()->GetCO2();
-    sensor.light = Air::instance()->GetLight();
+    sensor.light = LightCom::instance()->GetLight();
     
     sensor.ec = Solution::instance()->GetEC() * calibrationData.ecCal;
     sensor.ph = Solution::instance()->GetpH() * calibrationData.phCal;
