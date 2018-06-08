@@ -2,6 +2,7 @@
 extern TaskManager taskManager;
 #define FT_SENSOR A3
 #include "./Solution.h"
+#include "./Air.h"
 #include "./Gy21.h"
 #include "./CO2.h"
 #include "./Light.h"
@@ -19,11 +20,11 @@ public:
     sensor.co2 = 0;
     sensor.light = 0;
 
-
     taskManager.StartTask(Solution::instance());
-    taskManager.StartTask(GY21::instance());
-    taskManager.StartTask(Co2Sensor::instance());
-    taskManager.StartTask(Light::instance());
+    taskManager.StartTask(Air::instance());
+    // taskManager.StartTask(GY21::instance());
+    // taskManager.StartTask(Co2Sensor::instance());
+    // taskManager.StartTask(Light::instance());
   };
   static Sensor *instance()
   {
@@ -110,16 +111,20 @@ private:
   
   virtual void OnUpdate(uint32_t delta_time)
   {
-    sensor.temp = GY21::instance()->GetTemperature();
-    sensor.humi = GY21::instance()->GetHumidity();
-    // sensor.vpd = GY21::instance()->GetVpd();
+    sensor.temp = Air::instance()->GetTemperature();
+    sensor.humi = Air::instance()->GetHumidity();
+    sensor.co2 = Air::instance()->GetCO2();
+    sensor.light = Air::instance()->GetLight();
+    
     sensor.ec = Solution::instance()->GetEC() * calibrationData.ecCal;
     sensor.ph = Solution::instance()->GetpH() * calibrationData.phCal;
     sensor.water = Solution::instance()->GetWaterTemp();
-    sensor.co2 = Co2Sensor::instance()->GetCO2();
-    sensor.light = Light::instance()->GetLight();
-    // sensor.floating = digitalRead(FT_SENSOR);
     sensor.floating = Solution::instance()->GetFloating();
+
+    // sensor.temp = GY21::instance()->GetTemperature();
+    // sensor.humi = GY21::instance()->GetHumidity();
+    // sensor.co2 = Co2Sensor::instance()->GetCO2();
+    // sensor.light = Light::instance()->GetLight();
 
     // sensor.temp = 25.0;
     // sensor.humi = 60.0;
