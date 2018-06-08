@@ -8,7 +8,7 @@ class Air : public Task
     {
         temperature = 0;
         humidity = 0;
-        light = 0;
+        co2 = 0;
     }
     static Air *instance()
     {
@@ -17,8 +17,20 @@ class Air : public Task
         return s_instance;
     }
 
+    float GetTemperature(){
+        return temperature;
+    }
+
+    float GetHumidity(){
+        return humidity;
+    }
+
+    float GetCO2(){
+        return co2;
+    }
+
   private:
-    float temperature, humidity, light;
+    float temperature, humidity, co2;
     String cmdStr;
     String sensorStr = "0.00,0.00,0.0,0,0";
     char res[100];
@@ -43,13 +55,12 @@ class Air : public Task
                         {
                             res[size] = '\0';
                             String resData = res;
-                            float s[5];
-                            ExtractDataFloat(s, 4, resData);
+                            float s[4];
+                            ExtractDataFloat(s, 3, resData);
                             //25.00 50.00 50.00 60.00 1583.54
-                            ec = s[0];
-                            ph = s[1];
-                            water = s[2];
-                            floating = s[3];
+                            co2 = s[0];
+                            temperature = s[1];
+                            humidity = s[2];
                             // //debugCom.println(PrintSensor());
                             break;
                         }
@@ -82,7 +93,7 @@ class Air : public Task
     {
         String str = String(temperature) + " " +
                      String(humidity) + " " +
-                     String(light);
+                     String(co2);
         return str;
     }
 };
