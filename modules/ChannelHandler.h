@@ -49,7 +49,7 @@ class ChannelHanler : public Task
             taskManager.StartTask(channel[ch - 1]);
             break;
         default:
-            testCom.println("ChannelHandler: Unknow channel mode " + String(mode));
+            debugCom.println("ChannelHandler: Unknow channel mode " + String(mode));
         }
     }
 
@@ -307,7 +307,7 @@ class ChannelHanler : public Task
                 taskManager.StartTask(channel[i]);
                 break;
             default:
-                testCom.println("ChannelHandler: Unknow channel mode " + String(mode));
+                debugCom.println("ChannelHandler: Unknow channel mode " + String(mode));
             }
         }
     }

@@ -25,7 +25,7 @@ String ShowBoardInfo(){
 HardwareSerial &mpuCom    = Serial;
 HardwareSerial &debugCom  = Serial2;
 HardwareSerial &solCom = Serial1;
-HardwareSerial &testCom = Serial3;
+HardwareSerial &airCom = Serial3;
 
 #include "./modules/Helper/DisplayLog.h"
 
@@ -98,8 +98,9 @@ void setup()
 
     debugCom.begin(115200);
     mpuCom.begin(115200);
+    
     solCom.begin(9600);
-    testCom.begin(115200);
+    airCom.begin(9600);
     
     debugCom.println("Initializing...");
     debugCom.println(ShowBoardInfo());
