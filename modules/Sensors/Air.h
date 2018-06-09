@@ -56,11 +56,11 @@ class Air : public Task
                             res[size] = '\0';
                             String resData = res;
                             float s[4];
-                            ExtractDataFloat(s, 3, resData);
+                            ExtractDataFloat(s, 4, resData);
                             //25.00 50.00 50.00 60.00 1583.54
-                            co2 = s[0];
-                            temperature = s[1];
-                            humidity = s[2];
+                            co2 = s[2];
+                            temperature = s[0];
+                            humidity = s[1];
                             // //debugCom.println(PrintSensor());
                             break;
                         }
