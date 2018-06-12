@@ -10,12 +10,12 @@ TaskManager taskManager;
 #define VERSION 2.0
 #define PROJECT "PLANTLAB-GROBOT"
 #define UPLOADDATE String(__DATE__) + " " +  String(__TIME__)
-#define ledPin 2
-#define co2Pin 4
-#define ecPin 6
-#define phPin 7
-#define pumpPin 3
-#define valvePin 5
+#define ledPin 7
+#define co2Pin 5
+#define ecPin 3
+#define phPin 2
+#define pumpPin 6
+#define valvePin 4
 
 String ShowBoardInfo(){
     String str = "INFOBOARD-VERSION" + String(VERSION) + "\r\n";
